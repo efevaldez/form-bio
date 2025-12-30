@@ -3,7 +3,8 @@ import { useFormState } from 'react-dom';
 import { loginAction } from '../action/loginAction/loginAction';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-
+import { TextField } from '@mui/material';
+import Button from '@mui/material/Button';
 
 export type LoginState = {
   ok: boolean,
@@ -18,6 +19,7 @@ const initialState: LoginState = {
   name: null,
 
 }
+
 
 
 const Login = () => {
@@ -36,32 +38,20 @@ const Login = () => {
   return (
     <form action={formAction} className='space-y-4'>
       <div>
-        <label>DNI</label>
-        <input name='dni'
-          type='text'
-          inputMode='numeric'
-          maxLength={8}
-          required
-          className='border p-2 w-full'>
-        </input>
+       <TextField label="DNI" name='dni' required />
       </div>
 
       <div>
-        <label>Legajo</label>
-        <input name='file'
-          type='text'
-          inputMode="numeric"
-          maxLength={4}
-          required
-          className='border p-2 w-full'
-        />
-      </div>
+        <TextField label="Legajo" name='file' required />
+      </div> 
 
-      <button type='submit' className="w-full mt-4 rounded-md bg-black py-2.5 text-white font-semibold
+       <Button variant="contained" type='submit'>Ingresar</Button>
+
+      {/* <button type='submit' className="w-full mt-4 rounded-md bg-black py-2.5 text-white font-semibold
                transition hover:bg-grey-700 active:scale-[0.98]
               focus:outline-none focus:ring-2 focus:ring-grey-500">
         Ingresar
-      </button>
+      </button> */}
 
       {state.message && (
         <p className={state.ok ? 'text-green-600' : 'text-red-600'}>
