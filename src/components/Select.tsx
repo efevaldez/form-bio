@@ -1,34 +1,47 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
-export default function BasicSelect() {
-//   const [value, setValue] = React.useState('');
-
-//   const handleChange = (event) => {
-//     setValue(event.target.value);
-//   };
-
+export default function BasicSelect({
+  id,
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  id?: string;
+  label: string;
+  options: { value: string; label: string }[];
+  value?: string | number;
+  onChange: React.Dispatch<React.SetStateAction<string>>;
+}) {
+  const optionsExtended = [
+    // {
+    //   value: "",
+    //   label: "Seleccione una opción",
+    // },
+    ...options,
+  ];
   return (
     <Box sx={{ m: 1, minWidth: 120 }}>
       <FormControl fullWidth size="small">
-        <InputLabel id="basic-select-label">Motivos:</InputLabel>
+        <InputLabel id="basic-select-label">{label}</InputLabel>
         <Select
           labelId="basic-select-label"
-          id="basic-select"
-          //value={value}
-          label="Opciones"
-         // onChange={handleChange}
+          id={id}
+          value={value}
+          label={label}
+          // displayEmpty
+          onChange={(event) => onChange(event.target.value as string)}
         >
-          <MenuItem value={10}>Enfermedad</MenuItem>
-          <MenuItem value={20}>Enfermedad de familiar</MenuItem>
-          <MenuItem value={30}>Día de estudio</MenuItem>
-          <MenuItem value={40}>Otros</MenuItem>
+          {optionsExtended.map(({ value, label }) => (
+            <MenuItem value={value}>{label}</MenuItem>
+          ))}
         </Select>
       </FormControl>
     </Box>
