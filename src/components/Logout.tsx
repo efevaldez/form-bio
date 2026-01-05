@@ -9,6 +9,5 @@ export default function Logout() {
     }
     return (
         <Button onClick={logoutAction} variant="contained">Cerrar Sesión</Button>
-            // <button onClick={logoutAction}>Logout</button>
     );
 }
