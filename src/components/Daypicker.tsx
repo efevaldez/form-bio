@@ -20,8 +20,6 @@ export default function ResponsiveDatePickers() {
           onChange={(newValue: Dayjs | null) => setDate(newValue)} />
         </DemoItem>
       </DemoContainer>
-
     </LocalizationProvider>
-    
   );
 }

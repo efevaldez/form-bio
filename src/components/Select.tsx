@@ -36,7 +36,6 @@ export default function BasicSelect({
           id={id}
           value={value}
           label={label}
-          // displayEmpty
           onChange={(event) => onChange(event.target.value as string)}
         >
           {optionsExtended.map(({ value, label }) => (

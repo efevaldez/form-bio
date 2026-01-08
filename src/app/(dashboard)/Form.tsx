@@ -18,6 +18,8 @@ const Report = () => {
   const [selectedExcuse, setSelectedExcuse] = useState("");
 
   const [files, setFiles] = useState<File[]>([]);
+
+  const [loading , setLoading] = useState(false);
   
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -30,11 +32,11 @@ const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 });
-  const handleSubmit = () => {
-    submitExcuse({ selectedExcuse }); //llame a files y esta mal verificar porq
-  };
-
- 
+  const handleSubmit = async () => {
+    setLoading(true);
+    await submitExcuse({ selectedExcuse });
+    setLoading(false);
+  }
 
   return (
     <Grid container flexDirection={"column"} gap={2}>
@@ -67,7 +69,7 @@ const VisuallyHiddenInput = styled('input')({
 
   
 
-      <Button variant="contained" onClick={() => handleSubmit()}>
+      <Button variant="contained" disabled={loading} onClick={() => handleSubmit()}>
         Enviar
       </Button>
     </Grid>

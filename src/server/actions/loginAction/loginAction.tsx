@@ -2,7 +2,6 @@
 
 import { LoginState } from "@/app/login/Form";
 import { getUserByFileAndDni } from "@/server/queries/users";
-import { sql } from "@vercel/postgres";
 
 export async function loginAction(
   _state: LoginState,

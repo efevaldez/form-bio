@@ -18,12 +18,14 @@
     "@vercel/postgres": "^0.10.0",
     "dayjs": "^1.11.19",
     "next": "16.0.8",
+    "nodemailer": "^7.0.12",
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "react-hook-form": "^7.68.0"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/nodemailer": "^7.0.4",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
