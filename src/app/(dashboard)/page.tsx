@@ -17,10 +17,9 @@ export default async function Dashboard() {
     <main style={{ padding: "1rem" }}>
       <h1>Hola {userName}</h1>
       <Report />
-
-      {/* Agregar botón de enviar e input para cargar un documento */}
-
       {/* <Logout /> */}
+
     </main>
+
   );
 }
