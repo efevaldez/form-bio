@@ -9,6 +9,7 @@ import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Daypicker from "@/components/Daypicker";
+import { Dayjs } from "dayjs";
 
 
 const Report = () => {
@@ -21,38 +22,69 @@ const Report = () => {
 
   const [files, setFiles] = useState<File[]>([]);
 
-  const [loading , setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [open, setOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const [alertSeverity, setAlertSeverity] = useState<'success'|'error'>('success');
+  const [alertSeverity, setAlertSeverity] = useState<'success' | 'error'>('success');
+
+  //Daypicker
+  const [date, setDate] = useState<Dayjs | null>(null);
 
 
-  
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
+
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
   const handleSubmit = async () => {
-    setLoading(true);
-   const result = await submitExcuse({ selectedExcuse })!;
-   if (!result) {
+    if (!date) {
   setAlertSeverity("error");
-  setAlertMessage("No se pudo enviar el reporte");
-} else if (result.success) {
-  setAlertSeverity("success");
-  setAlertMessage(result.message);
-} else {
-  setAlertSeverity("error");
-  setAlertMessage(result.message);
+  setAlertMessage("Seleccioná una fecha");
+  setOpen(true);
+  return;
 }
+
+if (!selectedExcuse) {
+  setAlertSeverity("error");
+  setAlertMessage("Seleccioná un motivo");
+  setOpen(true);
+  return;
+}
+
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append("selectedExcuse", selectedExcuse);
+    formData.append('date', date.format('DD-MM-YYYY'));
+
+    files.forEach((file) => {
+      formData.append("files", file);
+    })
+    const result = await submitExcuse(formData);
+    if (result.success) {
+      setAlertSeverity('success');
+    } else {
+      setAlertSeverity('error')
+    }
+    //    if (!result) {
+    //   setAlertSeverity("error");
+    //   setAlertMessage("No se pudo enviar el reporte");
+    // } else if (result.success) {
+    //   setAlertSeverity("success");
+    //   setAlertMessage(result.message);
+    // } else {
+    //   setAlertSeverity("error");
+    //   setAlertMessage(result.message);
+    // }
+    setAlertMessage(result.message)
     setLoading(false);
     setOpen(true);
   }
@@ -77,39 +109,46 @@ const VisuallyHiddenInput = styled('input')({
         onChange={setSelectedExcuse}
       />
 
-       <Button
-      component="label"
-      role={undefined}
-      variant="contained"
-      tabIndex={-1}
-      startIcon={<CloudUploadIcon />}
-    >
-      Cargar archivos
-      <VisuallyHiddenInput
-        type="file"
-        onChange={(event) => {if (event.target.files) {
-              setFiles(Array.from(event.target.files));}
-        }}
-      />
+      <Button
+        component="label"
+        role={undefined}
+        variant="contained"
+        tabIndex={-1}
+        startIcon={<CloudUploadIcon />}
+      >
+        Cargar archivos
+        <VisuallyHiddenInput
+          type="file"
+          accept=".pdf,.jpg,.png"
+          multiple
+          onChange={(event) => {
+            if (event.target.files) {
+              setFiles(Array.from(event.target.files));
+            }
+          }}
+        />
       </Button>
 
-      <Daypicker />
-    
-    
+      <Daypicker 
+      value={date}
+      onChange={setDate}
+      />
 
-  
+
+
+
 
       <Button variant="contained" disabled={loading} onClick={() => handleSubmit()}>
-        Enviar
+        {loading ? 'Enviando...': 'Enviar'}
       </Button>
-       <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
-          severity="success"
+          severity={alertSeverity}
           variant="filled"
           sx={{ width: '100%' }}
         >
-          Reporte enviado
+          {alertMessage}
         </Alert>
       </Snackbar>
     </Grid>
