@@ -3,12 +3,13 @@
 import BasicSelect from "@/components/Select";
 import { submitExcuse } from "@/server/controllers/excuseController";
 import { excuse } from "@/utils/const";
-import { Button, Grid, styled } from "@mui/material";
+import { Button, Grid, IconButton, styled } from "@mui/material";
 import { useState } from "react";
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Daypicker from "@/components/Daypicker";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Dayjs } from "dayjs";
 
 
@@ -20,6 +21,7 @@ const Report = () => {
 
   const [selectedExcuse, setSelectedExcuse] = useState("");
 
+  //file upload
   const [files, setFiles] = useState<File[]>([]);
 
   const [loading, setLoading] = useState(false);
@@ -46,18 +48,18 @@ const Report = () => {
   });
   const handleSubmit = async () => {
     if (!date) {
-  setAlertSeverity("error");
-  setAlertMessage("Seleccioná una fecha");
-  setOpen(true);
-  return;
-}
+      setAlertSeverity("error");
+      setAlertMessage("Seleccioná una fecha");
+      setOpen(true);
+      return;
+    }
 
-if (!selectedExcuse) {
-  setAlertSeverity("error");
-  setAlertMessage("Seleccioná un motivo");
-  setOpen(true);
-  return;
-}
+    if (!selectedExcuse) {
+      setAlertSeverity("error");
+      setAlertMessage("Seleccioná un motivo");
+      setOpen(true);
+      return;
+    }
 
     setLoading(true);
 
@@ -109,37 +111,82 @@ if (!selectedExcuse) {
         onChange={setSelectedExcuse}
       />
 
+
+
+      <Daypicker
+        value={date}
+        onChange={setDate}
+      />
+
       <Button
         component="label"
         role={undefined}
         variant="contained"
         tabIndex={-1}
         startIcon={<CloudUploadIcon />}
+
       >
         Cargar archivos
         <VisuallyHiddenInput
           type="file"
           accept=".pdf,.jpg,.png"
           multiple
+          disabled={loading}
           onChange={(event) => {
             if (event.target.files) {
-              setFiles(Array.from(event.target.files));
+              const selectedFiles = Array.from(event.target.files);
+              setFiles(selectedFiles);
+
+              setAlertSeverity('success');
+              setAlertMessage(
+                selectedFiles.length === 1
+                  ? 'Archivo adjunto correctamente'
+                  : `${selectedFiles.length}`
+              );
+              setOpen(true);
             }
           }}
         />
-      </Button>
 
-      <Daypicker 
-      value={date}
-      onChange={setDate}
-      />
+      </Button>
+      {files.length > 0 && (
+        <Grid
+          sx={{
+            border: "1px solid #4caf50",
+            borderRadius: 1,
+            padding: 2,
+          }}
+        >
+          <strong>Archivo adjunto:</strong>
+
+          {files.map((file, index) => (
+            <Grid
+              key={index}
+              container
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ mt: 1 }}
+            >
+              <span>{file.name}</span>
+
+              <IconButton aria-label="delete" color="error"
+                onClick={() =>
+                  setFiles((prev) => prev.filter((_, i) => i !== index))
+                }>
+                <DeleteIcon fontSize="inherit" />
+              </IconButton>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+
 
 
 
 
 
       <Button variant="contained" disabled={loading} onClick={() => handleSubmit()}>
-        {loading ? 'Enviando...': 'Enviar'}
+        {loading ? 'Enviando...' : 'Enviar'}
       </Button>
       <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
         <Alert

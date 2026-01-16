@@ -70,8 +70,8 @@ export async function submitExcuse(
         <p><b>Fecha de ausencia:</b> ${formData.get('date')}</p>
        
         <p>¡Gracias!</p>
-        ${attachments}
-      `
+      `,
+      attachments
     });
 
     return {

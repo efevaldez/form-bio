@@ -12,6 +12,23 @@ export default function Daypicker({ value, onChange }: DaypickerProps) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
+      slotProps={{
+        textField: {
+            fullWidth: true,
+            variant: "outlined",
+            sx: {
+              backgroundColor: "#fff",
+              borderRadius: "10px",
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "10px",
+                height: "56px",
+              },
+              "& .MuiOutlinedInput-input": {
+                padding: "16.5px 14px",
+              },
+            },
+          },
+        }}
         label="Ingresá la fecha de tu ausencia"
         value={value}
         onChange={onChange}

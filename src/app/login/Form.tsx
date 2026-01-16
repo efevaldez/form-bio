@@ -21,7 +21,7 @@ const initialState: LoginState = {
 const Login = () => {
   const router = useRouter();
   const [state, formAction] = useActionState(loginAction, initialState);
-  //@TODO: LOADING
+ 
   React.useEffect(() => {
     console.log("state actual:", state);
     if (state.ok && state.name) {
@@ -42,7 +42,7 @@ const Login = () => {
 
       <TextField label="Legajo" name="file" required />
 
-      <Button variant="contained" type="submit">
+      <Button variant="contained" type="submit" disabled={state.ok}>
         Ingresar
       </Button>
 
@@ -52,13 +52,13 @@ const Login = () => {
         Ingresar
       </button> */}
 
-      {state.message && (
+      {/* {state.message && (
         <p className={state.ok ? "text-green-600" : "text-red-600"}>
           {state.message}
         </p>
       )}
 
-      {state.ok && <p className="font-bold">Bienvenido {state.name}</p>}
+      {state.ok && <p className="font-bold">Bienvenido {state.name}</p>} */}
     </Box>
   );
 };
