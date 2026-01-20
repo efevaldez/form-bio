@@ -14,9 +14,28 @@ export default async function Dashboard() {
   const userName = result.rows[0].name;
 
   return (
-    <main style={{ padding: "1rem" }}>
+    <main style={{ 
+      padding: "1rem",
+      display: "flex",
+      flexDirection: "column",
+      minHeight: "100vh",
+       }}>
+
+        <div style={{
+          display:'flex',
+          justifyContent:'space-between',
+          alignItems: 'center'
+        }}>
+          <h1> Hola {userName} </h1>
+          <Logout />
+        </div>
+
+        <Report />
+      {/* //<Logout />
+
+
       <h1>Hola {userName}</h1>
-      <Report />
+      <Report /> */}
       {/* <Logout /> */}
 
     </main>

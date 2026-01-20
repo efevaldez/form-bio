@@ -47,6 +47,9 @@ export async function submitExcuse(
   try {
     const user = await getUserByFile(hash);
 
+    // prueba
+    const supervisor = await getUserByFile(hash)
+
     const transporter = nodemailer.createTransport({
       host: "smtp.office365.com",
       port: 587,
@@ -59,8 +62,7 @@ export async function submitExcuse(
 
     await transporter.sendMail({
       from: `${process.env.MAIL_USER}`,
-      to: ["f.valdez@biosidus.com.ar"
-      ],
+      to: [`${supervisor?.email}`, "f.valdez@biosidus.com.ar",],
       subject: "Nueva inasistencia recibida",
       html: `
         <h3>¡Hola! Se reportó una nueva ausencia:</h3>

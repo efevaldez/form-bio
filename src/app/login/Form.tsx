@@ -2,7 +2,7 @@
 import { loginAction } from "../../server/actions/loginAction/loginAction";
 import { useRouter } from "next/navigation";
 import React, { useActionState } from "react";
-import { Box, TextField } from "@mui/material";
+import { Alert, Box, Snackbar, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 
 export type LoginState = {
@@ -21,7 +21,7 @@ const initialState: LoginState = {
 const Login = () => {
   const router = useRouter();
   const [state, formAction] = useActionState(loginAction, initialState);
- 
+
   React.useEffect(() => {
     console.log("state actual:", state);
     if (state.ok && state.name) {
@@ -38,9 +38,9 @@ const Login = () => {
       display="flex"
       flexDirection="column"
     >
-      <TextField label="DNI" name="dni" required />
+      <TextField label="DNI" name="dni" required error={!state.ok && !!state.message} />
 
-      <TextField label="Legajo" name="file" required />
+      <TextField label="Legajo" name="file" required error={!state.ok && !!state.message} />
 
       <Button variant="contained" type="submit" disabled={state.ok}>
         Ingresar
@@ -52,13 +52,17 @@ const Login = () => {
         Ingresar
       </button> */}
 
-      {/* {state.message && (
-        <p className={state.ok ? "text-green-600" : "text-red-600"}>
+      <Snackbar
+        open={!!state.message}
+        autoHideDuration={2000}
+        onClose={() => { }}
+      >
+        <Alert severity={state.ok ? "success" : "error"}>
           {state.message}
-        </p>
-      )}
+        </Alert>
+      </Snackbar>
 
-      {state.ok && <p className="font-bold">Bienvenido {state.name}</p>} */}
+
     </Box>
   );
 };

@@ -8,6 +8,6 @@ export default function Logout() {
         window.location.href = '/login';    
     }
     return (
-        <Button onClick={logoutAction} variant="contained">Cerrar Sesión</Button>
+        <Button onClick={logoutAction} variant="contained" >Cerrar Sesión</Button>
     );
 }

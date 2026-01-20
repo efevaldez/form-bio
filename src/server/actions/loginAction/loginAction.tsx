@@ -19,7 +19,7 @@ export async function loginAction(
   if (!user) {
     return {
       ok: false,
-      message: "DNI o legajo incorrectos",
+      message: "El DNI y el legajo no coinciden",
       name: null,
       hash: "",
     };
