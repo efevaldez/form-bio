@@ -32,11 +32,31 @@ const Login = () => {
 
   return (
     <Box
+  sx={{
+    minHeight: "100vh",
+    width: "100vw",
+    backgroundImage: "url('/bio1.jpg')",
+    backgroundSize: "cover",      
+    backgroundPosition: "center", 
+    backgroundRepeat: "no-repeat",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
+    <Box
       component={"form"}
       action={formAction}
       gap={2}
       display="flex"
       flexDirection="column"
+      sx={{
+    width: { xs: "90%", sm: 360 },
+    p: 4,
+    borderRadius: 2,
+    backgroundColor: "rgba(255, 255, 255, 0.75)",
+    boxShadow: 6,
+  }}
     >
       <TextField label="DNI" name="dni" required error={!state.ok && !!state.message} />
 
@@ -63,6 +83,7 @@ const Login = () => {
       </Snackbar>
 
 
+    </Box>
     </Box>
   );
 };

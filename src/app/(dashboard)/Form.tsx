@@ -89,6 +89,14 @@ const Report = () => {
     setAlertMessage(result.message)
     setLoading(false);
     setOpen(true);
+
+    if(result.success){
+      setSelectedExcuse('');
+      setDate(null);
+      setFiles([]);
+    }else{
+      setAlertSeverity('error')
+    }
   }
 
   const handleClose = (

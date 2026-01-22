@@ -16,15 +16,20 @@ export default async function Home() {
         minHeight: "100dvh",
       }}
     >
-      <Paper sx={{ p: 4, maxWidth: "20rem", margin: "auto" }}>
+      {/* <Paper elevation={3} sx={{ p: 4, maxWidth: "20rem", margin: "auto" }}>
         <Grid
           flexDirection={"column"}
           container
           justifyContent={"center"}
           alignContent={"center"}
           gap={2}
-        >
-          <Typography variant="h1">Reporte de ausencias</Typography>
+        > */}
+          {/* <Typography variant="h6"
+            fontWeight={600}
+            textAlign="center"
+            sx={{
+              letterSpacing: "0.08em",
+            }}>Reporte de ausencias</Typography> */}
           <Login />
           {/* <div className="flex flex-col gap-4">
             {result.rows.map((user) => (
@@ -54,8 +59,8 @@ export default async function Home() {
               </div>
             ))}
           </div> */}
-        </Grid>
-      </Paper>
+        {/* </Grid> */}
+      {/* // </Paper> */}
     </Box>
   );
 }

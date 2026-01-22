@@ -10,16 +10,16 @@ type SubmitExcuseResult = {
 };
 
 export async function submitExcuse(
- formData: FormData
+  formData: FormData
 ): Promise<SubmitExcuseResult> {
   const hash = (await cookies()).get("hash")?.value;
-  
-//   {
-//   selectedExcuse,
-// }: {
-//   selectedExcuse: string;
-// }): Promise<SubmitExcuseResult> {
-//  const hash = (await cookies()).get("hash")?.value;
+
+  //   {
+  //   selectedExcuse,
+  // }: {
+  //   selectedExcuse: string;
+  // }): Promise<SubmitExcuseResult> {
+  //  const hash = (await cookies()).get("hash")?.value;
 
 
   if (!hash) {
@@ -31,24 +31,32 @@ export async function submitExcuse(
   const selectedExcuse = formData.get("selectedExcuse") as string;
   const files = formData.getAll("files") as File[];
 
-   const attachments = await Promise.all(
+  const attachments = await Promise.all(
     files.map(async (file) => {
       const buffer = Buffer.from(await file.arrayBuffer());
-    if (buffer.length > 2_000_000) throw new Error("Archivo demasiado grande");
-        return{
-      filename: file.name,
-      content: Buffer.from(await file.arrayBuffer()),
-      contentType: file.type,
-        }
+      if (buffer.length > 2_000_000) throw new Error("Archivo demasiado grande");
+      return {
+        filename: file.name,
+        content: Buffer.from(await file.arrayBuffer()),
+        contentType: file.type,
+      }
     }))
-  ;
+    ;
 
 
   try {
     const user = await getUserByFile(hash);
 
-    // prueba
-    const supervisor = await getUserByFile(hash)
+    console.log(user);
+    console.log('rrhh',user?.siteResponsibleEmail);
+    console.log('supervisor',user?.supervisoremail);
+
+    const recipients = [
+      //user?.supervisoremail,
+      // ...user?.siteResponsibleEmail || [],
+      "f.valdez@biosidus.com.ar"
+    ]
+console.log('Mail enviado a:', recipients)
 
     const transporter = nodemailer.createTransport({
       host: "smtp.office365.com",
@@ -58,11 +66,11 @@ export async function submitExcuse(
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
       },
-      });
+    });
 
     await transporter.sendMail({
       from: `${process.env.MAIL_USER}`,
-      to: [`${supervisor?.email}`, "f.valdez@biosidus.com.ar",],
+      to: [`${recipients}`],
       subject: "Nueva inasistencia recibida",
       html: `
         <h3>¡Hola! Se reportó una nueva ausencia:</h3>
