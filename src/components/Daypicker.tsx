@@ -16,12 +16,13 @@ export default function Daypicker({ value, onChange }: DaypickerProps) {
         textField: {
             fullWidth: true,
             variant: "outlined",
+            size: "small",
             sx: {
               backgroundColor: "#fff",
               borderRadius: "10px",
               "& .MuiOutlinedInput-root": {
                 borderRadius: "10px",
-                height: "56px",
+                height: "56",
               },
               "& .MuiOutlinedInput-input": {
                 padding: "16.5px 14px",

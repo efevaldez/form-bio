@@ -28,7 +28,8 @@ export default function BasicSelect({
     ...options,
   ];
   return (
-    <Box sx={{ m: 1, minWidth: 120 }}>
+    <Box sx={{// m: 1, minWidth: 120 
+      width: "100%"}}>
       <FormControl fullWidth size="small">
         <InputLabel id="basic-select-label">{label}</InputLabel>
         <Select
@@ -37,6 +38,13 @@ export default function BasicSelect({
           value={value}
           label={label}
           onChange={(event) => onChange(event.target.value as string)}
+          sx={{
+            borderRadius: "10px",
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "10px",
+              height: 56, 
+            },
+          }}
         >
           {optionsExtended.map(({ value, label }) => (
             <MenuItem value={value}>{label}</MenuItem>
