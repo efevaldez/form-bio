@@ -44,6 +44,7 @@ export default function BasicSelect({
               borderRadius: "10px",
               height: 56, 
             },
+            
           }}
         >
           {optionsExtended.map(({ value, label }) => (

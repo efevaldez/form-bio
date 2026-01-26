@@ -24,9 +24,9 @@ export default function Daypicker({ value, onChange }: DaypickerProps) {
                 borderRadius: "10px",
                 height: "56",
               },
-              "& .MuiOutlinedInput-input": {
-                padding: "16.5px 14px",
-              },
+              // "& .MuiOutlinedInput-input": {
+              //   padding: "16.5px 14px",
+              // },
             },
           },
         }}
