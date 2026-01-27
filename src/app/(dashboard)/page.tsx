@@ -26,7 +26,7 @@ export default async function Dashboard() {
           justifyContent:'space-between',
           alignItems: 'center'
         }}>
-          <h1> Hola {userName} </h1>
+          <h1> ¡Hola {userName}! </h1>
           <Logout />
         </div>
 

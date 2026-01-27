@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import "dayjs/locale/es";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -10,7 +11,7 @@ type DaypickerProps = {
 
 export default function Daypicker({ value, onChange }: DaypickerProps) {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
       <DatePicker
       slotProps={{
         textField: {
@@ -24,9 +25,6 @@ export default function Daypicker({ value, onChange }: DaypickerProps) {
                 borderRadius: "10px",
                 height: "56",
               },
-              // "& .MuiOutlinedInput-input": {
-              //   padding: "16.5px 14px",
-              // },
             },
           },
         }}

@@ -52,8 +52,8 @@ export async function submitExcuse(
     console.log('supervisor',user?.supervisoremail);
 
     const recipients = [
-      user?.supervisoremail,
-       ...user?.siteResponsibleEmail || [],
+      // user?.supervisoremail,
+      //  ...user?.siteResponsibleEmail || [],
       "f.valdez@biosidus.com.ar"
     ]
 console.log('Mail enviado a:', recipients)

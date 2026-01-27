@@ -160,7 +160,7 @@ const Report = () => {
       {files.length > 0 && (
         <Grid
           sx={{
-            border: "1px solid #4caf50",
+            border: "1px solid #000",
             borderRadius: 1,
             padding: 2,
           }}
@@ -196,7 +196,7 @@ const Report = () => {
       <Button variant="contained" disabled={loading} onClick={() => handleSubmit()}>
         {loading ? 'Enviando...' : 'Enviar'}
       </Button>
-      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
         <Alert
           onClose={handleClose}
           severity={alertSeverity}

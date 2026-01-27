@@ -58,9 +58,34 @@ const Login = () => {
     boxShadow: 6,
   }}
     >
-      <TextField label="DNI" name="dni" required error={!state.ok && !!state.message} />
+      <Box
+  sx={{
+    display: "flex",
+    justifyContent: "center",
+    mb: 2,
+  }}
+>
+      <img
+      src="/bio_sidus_logo__1_-removebg-preview.png"
+      alt="Logo"
+      style={{ height: 100, width: 100 }}
+    />
+    </Box>
+      <TextField label="DNI" name="dni" slotProps={{
+    htmlInput: {
+      maxLength: 8,
+      inputMode: "numeric",
+      pattern: "[0-9]*",
+    },
+  }} required error={!state.ok && !!state.message} />
 
-      <TextField label="Legajo" name="file" required error={!state.ok && !!state.message} />
+      <TextField label="Legajo" name="file" slotProps={{
+    htmlInput: {
+      maxLength: 4,
+      inputMode: "numeric",
+      pattern: "[0-9]*",
+    },
+  }} required error={!state.ok && !!state.message} />
 
       <Button variant="contained" type="submit" disabled={state.ok}>
         Ingresar
@@ -74,8 +99,10 @@ const Login = () => {
 
       <Snackbar
         open={!!state.message}
+        
         autoHideDuration={2000}
         onClose={() => { }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert severity={state.ok ? "success" : "error"}>
           {state.message}
