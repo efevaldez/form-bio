@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useActionState } from "react";
 import { Alert, Box, Snackbar, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
+import { signIn } from "next-auth/react";
 
 export type LoginState = {
   ok: boolean;
@@ -91,6 +92,9 @@ const Login = () => {
         Ingresar
       </Button>
 
+      <Button variant="contained"  onClick={() => signIn("microsoft-entra-id", {callbackUrl:"/"})} >
+        Ingresar con Outlook
+      </Button>
       {/* <button type='submit' className="w-full mt-4 rounded-md bg-black py-2.5 text-white font-semibold
                transition hover:bg-grey-700 active:scale-[0.98]
               focus:outline-none focus:ring-2 focus:ring-grey-500">
