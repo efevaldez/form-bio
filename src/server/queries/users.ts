@@ -34,14 +34,7 @@ export const getUserByFile = async (file: string): Promise<user | null> => {
     where usr.file = ${file}
     group by usr.file, usr.name, sup.name, sup.email`;
     console.log(result)
-    // select
-    //  usr.*,
-    //  sup.name as supervisorName,
-    // sup.email as supervisorEmail
-    // from "Users" usr 
-    // join "Users" sup 
-    // on usr.supervisor=sup.file 
-    // where usr.file = ${file} LIMIT 1`;
+    
   return result.rows[0] as user;
 
 };

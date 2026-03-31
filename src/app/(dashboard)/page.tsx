@@ -3,15 +3,37 @@ import { sql } from "@vercel/postgres";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Report from "./Form";
+import { getServerSession } from "next-auth";
+import { loginAuth } from "@/pages/api/auth/[...nextauth]";
+
 
 export default async function Dashboard() {
+  const session = await getServerSession(loginAuth);
+
   const hash = (await cookies()).get("hash")?.value;
-  if (!hash) return redirect("/login");
+  // if (!hash) return redirect("/login");
 
-  const result =
-    await sql`SELECT name FROM "Users" WHERE file = ${hash} LIMIT 1`;
+  let userName = "";
 
-  const userName = result.rows[0].name;
+  if (session) {
+    return redirect('/admin/users');
+  }
+  else if (hash) {
+    const result = await sql`SELECT name FROM "Users" WHERE file = ${hash} LIMIT 1`;
+    
+    if (result.rows.length > 0) {
+      userName = result.rows[0].name;
+    } else {
+      return redirect("/login");
+    }
+  } else {
+    return redirect("/login");
+  }
+
+  // const result =
+  //   await sql`SELECT name FROM "Users" WHERE file = ${hash} LIMIT 1`;
+
+  // const userName = result.rows[0].name;
 
   return (
     <main style={{ 

@@ -3,8 +3,8 @@
 import { cookies } from "next/headers";
 import { getUserByFile } from "../queries/users";
 import nodemailer from "nodemailer";
-import { getServerSession } from "next-auth";
-import { loginAuth } from "../../pages/api/auth/[...nextauth]";
+//import { getServerSession } from "next-auth";
+//import { loginAuth } from "../../pages/api/auth/[...nextauth]";
 
 type SubmitExcuseResult = {
   success: boolean;
@@ -16,7 +16,7 @@ export async function submitExcuse(
 ): Promise<SubmitExcuseResult> {
   const hash = (await cookies()).get("hash")?.value;
 
-  const session = await getServerSession(loginAuth);
+ // const session = await getServerSession(loginAuth);
 
   //   {
   //   selectedExcuse,
@@ -26,7 +26,7 @@ export async function submitExcuse(
   //  const hash = (await cookies()).get("hash")?.value;
 
 
-  if (!hash || !session) {
+  if (!hash) {
     return {
       success: false,
       message: "Sesión expirada. Volvé a iniciar sesión.",

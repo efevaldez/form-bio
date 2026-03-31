@@ -92,15 +92,10 @@ const Login = () => {
         Ingresar
       </Button>
 
-      <Button variant="contained"  onClick={() => signIn("microsoft-entra-id", {callbackUrl:"/"})} >
+      <Button variant="contained" type="button"  onClick={() =>{
+         signIn("azure-ad", {callbackUrl:"/admin/users", redirect: true}, {prompt: "none"})}} >
         Ingresar con Outlook
       </Button>
-      {/* <button type='submit' className="w-full mt-4 rounded-md bg-black py-2.5 text-white font-semibold
-               transition hover:bg-grey-700 active:scale-[0.98]
-              focus:outline-none focus:ring-2 focus:ring-grey-500">
-        Ingresar
-      </button> */}
-
       <Snackbar
         open={!!state.message}
         
