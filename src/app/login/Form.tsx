@@ -19,9 +19,23 @@ const initialState: LoginState = {
   name: null,
 };
 
+const formatDni = (value: string) => {
+  const digits = value.replace(/\D/g, "").slice(0, 8);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 5) return `${digits.slice(0, 2)}.${digits.slice(2)}`;
+  return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5)}`;
+};
+
+const formatFile = (value: string) => {
+  const digits = value.replace(/\D/g, "").slice(0, 4);
+  return digits;
+};
+
 const Login = () => {
   const router = useRouter();
   const [state, formAction] = useActionState(loginAction, initialState);
+  const [dni, setDni] = React.useState("");
+  const [file, setFile] = React.useState("");
 
   React.useEffect(() => {
     console.log("state actual:", state);
@@ -72,21 +86,37 @@ const Login = () => {
       style={{ height: 100, width: 100 }}
     />
     </Box>
-      <TextField label="DNI" name="dni" slotProps={{
-    htmlInput: {
-      maxLength: 8,
-      inputMode: "numeric",
-      pattern: "[0-9]*",
-    },
-  }} required error={!state.ok && !!state.message} />
+      <TextField
+        label="DNI"
+        name="dni"
+        value={dni}
+        onChange={(e) => setDni(formatDni(e.target.value))}
+        slotProps={{
+          htmlInput: {
+            maxLength: 11,
+            inputMode: "numeric",
+            pattern: "[0-9.]*",
+          },
+        }}
+        required
+        error={!state.ok && !!state.message}
+      />
 
-      <TextField label="Legajo" name="file" slotProps={{
-    htmlInput: {
-      maxLength: 4,
-      inputMode: "numeric",
-      pattern: "[0-9]*",
-    },
-  }} required error={!state.ok && !!state.message} />
+      <TextField
+        label="Legajo"
+        name="file"
+        value={file}
+        onChange={(e) => setFile(formatFile(e.target.value))}
+        slotProps={{
+          htmlInput: {
+            maxLength: 4,
+            inputMode: "numeric",
+            pattern: "[0-9]*",
+          },
+        }}
+        required
+        error={!state.ok && !!state.message}
+      />
 
       <Button variant="contained" type="submit" disabled={state.ok}>
         Ingresar

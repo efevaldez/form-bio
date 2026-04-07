@@ -7,9 +7,11 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 type DaypickerProps = {
   value: Dayjs | null;
   onChange: (date: Dayjs | null) => void;
+  error?: boolean;
+  helperText?: string;
 };
 
-export default function Daypicker({ value, onChange }: DaypickerProps) {
+export default function Daypicker({ value, onChange, error, helperText }: DaypickerProps) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
       <DatePicker
@@ -18,6 +20,8 @@ export default function Daypicker({ value, onChange }: DaypickerProps) {
             fullWidth: true,
             variant: "outlined",
             size: "small",
+            error: Boolean(error),
+            helperText: helperText,
             sx: {
               backgroundColor: "#fff",
               borderRadius: "10px",

@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
 import MuiSelect from "@mui/material/Select";
 
 type Option = {
@@ -16,6 +17,9 @@ export default function Select({
   options,
   onChange,
   name,
+  value,
+  error,
+  helperText,
 }: {
   id?: string;
   label: string;
@@ -23,18 +27,20 @@ export default function Select({
   value?: string;
   onChange?: (val: string) => void;
   name?: string;
-  required: true;
+  error?: boolean;
+  helperText?: string;
+  required?: boolean;
 }) {
   return (
     <Box sx={{ width: "100%" }}>
-      <FormControl fullWidth size="small">
+      <FormControl fullWidth size="small" error={Boolean(error)}>
         <InputLabel id={`${id}-label`}>{label}</InputLabel>
 
         <MuiSelect
           labelId={`${id}-label`}
           id={id}
           name={name}
-          defaultValue=""
+          value={value ?? ""}
           label={label}
           onChange={(e) => onChange?.(e.target.value as string)}
           required
@@ -55,6 +61,7 @@ export default function Select({
             </MenuItem>
           ))}
         </MuiSelect>
+        {helperText && <FormHelperText>{helperText}</FormHelperText>}
       </FormControl>
     </Box>
   );

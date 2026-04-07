@@ -1,13 +1,14 @@
 'use client';
 
 import { Button } from "@mui/material";
+import { signOut } from "next-auth/react";
 
 export default function Logout() {
-    const logoutAction = () => {
+    const logoutAction = async () => {
         document.cookie = 'hash=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
-        window.location.href = '/login';    
+        await signOut({ callbackUrl: '/login' });
     }
     return (
-        <Button onClick={logoutAction} variant="contained" >Cerrar Sesión</Button>
+        <Button onClick={logoutAction} variant="contained">Cerrar Sesión</Button>
     );
 }

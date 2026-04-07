@@ -7,8 +7,11 @@ export async function loginAction(
   _state: LoginState,
   formData: FormData
 ): Promise<LoginState> {
-  const dni = formData.get("dni") as string;
-  const file = formData.get("file") as string;
+  const dniInput = (formData.get("dni") as string | null) ?? "";
+  const fileInput = (formData.get("file") as string | null) ?? "";
+
+  const dni = dniInput.replace(/\D/g, "");
+  const file = fileInput.replace(/\D/g, "");
 
   if (!dni || !file) {
     return { ok: false, message: "Datos incorrectos", name: null, hash: "" };

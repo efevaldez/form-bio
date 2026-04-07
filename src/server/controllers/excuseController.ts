@@ -3,8 +3,6 @@
 import { cookies } from "next/headers";
 import { getUserByFile } from "../queries/users";
 import nodemailer from "nodemailer";
-//import { getServerSession } from "next-auth";
-//import { loginAuth } from "../../pages/api/auth/[...nextauth]";
 
 type SubmitExcuseResult = {
   success: boolean;
@@ -15,16 +13,6 @@ export async function submitExcuse(
   formData: FormData
 ): Promise<SubmitExcuseResult> {
   const hash = (await cookies()).get("hash")?.value;
-
- // const session = await getServerSession(loginAuth);
-
-  //   {
-  //   selectedExcuse,
-  // }: {
-  //   selectedExcuse: string;
-  // }): Promise<SubmitExcuseResult> {
-  //  const hash = (await cookies()).get("hash")?.value;
-
 
   if (!hash) {
     return {

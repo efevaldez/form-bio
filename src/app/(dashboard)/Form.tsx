@@ -3,9 +3,21 @@
 import BasicSelect from "@/components/Select";
 import { submitExcuse } from "@/server/controllers/excuseController";
 import { excuse } from "@/utils/const";
-import { Button, Grid, IconButton, styled } from "@mui/material";
+import { Button, Grid, IconButton, styled, Typography } from "@mui/material";
 import { useState } from "react";
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 import Alert from '@mui/material/Alert';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Daypicker from "@/components/Daypicker";
@@ -14,8 +26,8 @@ import { Dayjs } from "dayjs";
 
 
 const Report = () => {
-  const excusesOptions = Object.entries(excuse).map(([key, value]) => ({
-    value: value,
+  const excusesOptions = Object.values(excuse).map((value) => ({
+    value,
     label: value,
   }));
 
@@ -33,39 +45,62 @@ const Report = () => {
   //Daypicker
   const [date, setDate] = useState<Dayjs | null>(null);
 
+  // File upload validation constants
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+  const ALLOWED_FILE_TYPES = ["application/pdf", "image/jpeg", "image/png"];
+  const MAX_FILES = 3;
 
+  const [fieldErrors, setFieldErrors] = useState({ selectedExcuse: '', date: '', files: '' });
 
-  const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-  });
-  const handleSubmit = async () => {
-    if (!date) {
-      setAlertSeverity("error");
-      setAlertMessage("Seleccioná una fecha");
-      setOpen(true);
-      return;
-    }
+  const validateFields = () => {
+    const errors = { selectedExcuse: '', date: '', files: '' };
+    let hasError = false;
 
     if (!selectedExcuse) {
-      setAlertSeverity("error");
-      setAlertMessage("Seleccioná un motivo");
+      errors.selectedExcuse = 'Seleccioná un motivo';
+      hasError = true;
+    }
+
+    if (!date) {
+      errors.date = 'Seleccioná una fecha';
+      hasError = true;
+    }
+
+    if (files.length > MAX_FILES) {
+      errors.files = `Máximo ${MAX_FILES} archivos permitidos`;
+      hasError = true;
+    }
+
+    files.forEach((file) => {
+      if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+        errors.files = 'Solo se permiten archivos PDF, JPG o PNG';
+        hasError = true;
+      } else if (file.size > MAX_FILE_SIZE) {
+        errors.files = 'Cada archivo debe ser menor de 5 MB';
+        hasError = true;
+      }
+    });
+
+    return { hasError, errors };
+  };
+
+  const handleSubmit = async () => {
+    const { hasError, errors } = validateFields();
+
+    if (hasError) {
+      setFieldErrors(errors);
+      setAlertSeverity('error');
+      setAlertMessage('Por favor completá los campos requeridos correctamente');
       setOpen(true);
       return;
     }
 
+    setFieldErrors({ selectedExcuse: '', date: '', files: '' });
     setLoading(true);
 
     const formData = new FormData();
     formData.append("selectedExcuse", selectedExcuse);
-    formData.append('date', date.format('DD-MM-YYYY'));
+    formData.append('date', date ? date.format('DD-MM-YYYY') : '');
 
     files.forEach((file) => {
       formData.append("files", file);
@@ -117,6 +152,8 @@ const Report = () => {
         options={excusesOptions}
         value={selectedExcuse}
         onChange={setSelectedExcuse}
+        error={Boolean(fieldErrors.selectedExcuse)}
+        helperText={fieldErrors.selectedExcuse}
       />
 
 
@@ -124,6 +161,8 @@ const Report = () => {
       <Daypicker
         value={date}
         onChange={setDate}
+        error={Boolean(fieldErrors.date)}
+        helperText={fieldErrors.date}
       />
 
       <Button
@@ -143,15 +182,39 @@ const Report = () => {
           onChange={(event) => {
             if (event.target.files) {
               const selectedFiles = Array.from(event.target.files);
-              setFiles(selectedFiles);
 
-              setAlertSeverity('success');
-              setAlertMessage(
-                selectedFiles.length === 1
-                  ? 'Archivo adjunto correctamente'
-                  : `${selectedFiles.length}`
-              );
-              setOpen(true);
+              let fileError = '';
+
+              if (selectedFiles.length > MAX_FILES) {
+                fileError = `Máximo ${MAX_FILES} archivos permitidos`;
+              } else {
+                const invalidFile = selectedFiles.find((file) => !ALLOWED_FILE_TYPES.includes(file.type));
+                if (invalidFile) {
+                  fileError = 'Solo se permiten archivos PDF, JPG o PNG';
+                }
+
+                const largeFile = selectedFiles.find((file) => file.size > MAX_FILE_SIZE);
+                if (!fileError && largeFile) {
+                  fileError = 'Cada archivo debe ser menor de 5 MB';
+                }
+              }
+
+              if (fileError) {
+                setFieldErrors((prev) => ({ ...prev, files: fileError }));
+                setAlertSeverity('error');
+                setAlertMessage(fileError);
+                setOpen(true);
+              } else {
+                setFiles(selectedFiles);
+                setFieldErrors((prev) => ({ ...prev, files: '' }));
+                setAlertSeverity('success');
+                setAlertMessage(
+                  selectedFiles.length === 1
+                    ? 'Archivo adjunto correctamente'
+                    : `${selectedFiles.length} archivos adjuntos correctamente`
+                );
+                setOpen(true);
+              }
             }
           }}
         />
@@ -190,8 +253,11 @@ const Report = () => {
 
 
 
-
-
+      {fieldErrors.files && (
+        <Typography variant="caption" color="error" sx={{ mt: 0.5 }}>
+          {fieldErrors.files}
+        </Typography>
+      )}
 
       <Button variant="contained" disabled={loading} onClick={() => handleSubmit()}>
         {loading ? 'Enviando...' : 'Enviar'}
