@@ -1,5 +1,6 @@
 import { sql } from "@vercel/postgres";
 import EditUserForm from "./editUserForm";
+import { Container, Box } from "@mui/material";
 
 interface User {
   id: string;
@@ -21,9 +22,10 @@ export default async function EditUserPage({ params }: { params: { id: string } 
   }));
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Editar usuario</h1>
-      <EditUserForm user={user} supervisorOptions={supervisorOptions} />
-    </div>
+    <Container maxWidth="sm">
+      <Box sx={{ py: { xs: 1.5, sm: 2, md: 2.5, lg: 3 }, px: { xs: 1, sm: 2 } }}>
+        <EditUserForm user={user} supervisorOptions={supervisorOptions} />
+      </Box>
+    </Container>
   );
 }

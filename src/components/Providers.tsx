@@ -3,6 +3,15 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const theme = createTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 900,
+        lg: 1200,
+        xl: 1536,
+      },
+    },
     transitions: {
       duration: {
         short: 200,
@@ -30,22 +39,53 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     typography: {
       fontFamily: `"Inter", sans-serif`,
       h1: {
-        fontSize: "1.2rem",
-        "@media (min-width:600px)": {
-          fontSize: "1.5rem",
-        },
+        fontSize: "clamp(1.5rem, 5vw, 2.5rem)",
+        fontWeight: 600,
+      },
+      h2: {
+        fontSize: "clamp(1.25rem, 4vw, 2rem)",
+        fontWeight: 600,
+      },
+      h3: {
+        fontSize: "clamp(1.1rem, 3vw, 1.75rem)",
+        fontWeight: 600,
+      },
+      h4: {
+        fontSize: "clamp(1rem, 3vw, 1.5rem)",
+        fontWeight: 600,
+      },
+      body1: {
+        fontSize: "clamp(0.875rem, 2vw, 1rem)",
+      },
+      body2: {
+        fontSize: "clamp(0.8125rem, 1.5vw, 0.875rem)",
       },
       button: {
         textTransform: "none",
+        fontSize: "clamp(0.875rem, 1vw, 1rem)",
       },
     },
     components: {
+      MuiContainer: {
+        styleOverrides: {
+          root: {
+            "@media (max-width: 600px)": {
+              paddingLeft: 0,
+              paddingRight: 0,
+            },
+          },
+        },
+      },
       MuiButton: {
         styleOverrides: {
           root: {
             borderRadius: 10,
             padding: "8px 20px",
             boxShadow: "none",
+            "@media (max-width: 600px)": {
+              padding: "6px 16px",
+              fontSize: "0.875rem",
+            },
           },
           contained: {
             boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
@@ -55,10 +95,28 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           },
         },
       },
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            "@media (max-width: 600px)": {
+              padding: "8px",
+            },
+          },
+        },
+      },
       MuiTextField: {
         defaultProps: {
           fullWidth: true,
           variant: "outlined",
+        },
+        styleOverrides: {
+          root: {
+            "@media (max-width: 600px)": {
+              "& .MuiInputBase-input": {
+                fontSize: "16px", // Prevents zoom on iOS
+              },
+            },
+          },
         },
       },
       MuiInputBase: {
@@ -69,6 +127,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           },
           input: {
             padding: "14px 14px",
+            "@media (max-width: 600px)": {
+              padding: "12px 12px",
+            },
           },
         },
       },
@@ -80,6 +141,34 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           },
           notchedOutline: {
             borderColor: "#D0D0D0",
+          },
+        },
+      },
+      MuiTable: {
+        styleOverrides: {
+          root: {
+            "@media (max-width: 600px)": {
+              fontSize: "0.875rem",
+            },
+          },
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            "@media (max-width: 600px)": {
+              padding: "8px",
+              fontSize: "0.75rem",
+            },
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            "@media (max-width: 600px)": {
+              margin: "0 8px",
+            },
           },
         },
       },

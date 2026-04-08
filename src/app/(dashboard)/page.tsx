@@ -1,7 +1,7 @@
 import Logout from "@/components/Logout";
 import { loginAuth } from "@/pages/api/auth/[...nextauth]";
 import capitalize from "@/utils/capitalize";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { sql } from "@vercel/postgres";
 import { getServerSession } from "next-auth";
 import { cookies } from "next/headers";
@@ -30,34 +30,34 @@ export default async function Dashboard() {
     return redirect("/login");
   }
 
-  // const result =
-  //   await sql`SELECT name FROM "Users" WHERE file = ${hash} LIMIT 1`;
-
-  // const userName = result.rows[0].name;
-
   return (
-    <Box
-      component={"main"}
-      sx={{
-        padding: "1rem",
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-        maxWidth: "700px",
-        margin: "0 auto",
-      }}
-    >
+    <Container maxWidth="lg">
       <Box
+        component="main"
         sx={{
+          py: { xs: 1.5, sm: 2, md: 2.5, lg: 3 },
+          px: { xs: 1, sm: 2 },
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          flexDirection: "column",
+          minHeight: "100vh",
         }}
       >
-        <h1> ¡Hola {capitalize(userName)}! </h1>
-        <Logout />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: { xs: "flex-start", sm: "space-between" },
+            alignItems: { xs: "flex-start", sm: "center" },
+            gap: { xs: 1, sm: 2 },
+            mb: { xs: 2, sm: 3 },
+          }}
+        >
+          <h1 style={{ margin: 0, fontSize: "clamp(1.25rem, 5vw, 2rem)" }}>¡Hola {capitalize(userName)}!</h1>
+          <Logout />
+        </Box>
+
+        <Report />
       </Box>
-      <Report />
-    </Box>
+    </Container>
   );
 }

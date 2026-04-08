@@ -14,8 +14,13 @@ debug: true,
 callbacks: {
   async signIn({ user, account }) {
     if (account.provider === "azure-ad") {
-      const adminList = ["j.modugno@biosidus.com.ar", "a.blanco@biosidus.com.ar", "a.caillet@biosidus.com.ar" , "v.rocchetti@biosidus.com.ar",
-        "d.tricoli@biosidus.com.ar", "m.hernandez@biosidus.com.ar", "f.valdez@biosidus.com.ar"
+      const adminList = ["j.modugno@biosidus.com.ar",
+         "a.blanco@biosidus.com.ar", 
+         "a.caillet@biosidus.com.ar" ,
+          "v.rocchetti@biosidus.com.ar",
+        "d.tricoli@biosidus.com.ar",
+         "m.hernandez@biosidus.com.ar", 
+         "f.valdez@biosidus.com.ar"
       ];
       return adminList.includes(user.email);
     }

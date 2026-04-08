@@ -1,30 +1,34 @@
 "use client";
 
-import Daypicker from "@/components/Daypicker";
 import BasicSelect from "@/components/Select";
 import { submitExcuse } from "@/server/controllers/excuseController";
 import { excuse } from "@/utils/const";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Button, Grid, IconButton, styled, Typography } from "@mui/material";
-import Alert from "@mui/material/Alert";
-import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
-import { Dayjs } from "dayjs";
+import { Button, Grid, IconButton, styled, Typography, Box, useMediaQuery, useTheme } from "@mui/material";
 import { useState } from "react";
+import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
   height: 1,
-  overflow: "hidden",
-  position: "absolute",
+  overflow: 'hidden',
+  position: 'absolute',
   bottom: 0,
   left: 0,
-  whiteSpace: "nowrap",
+  whiteSpace: 'nowrap',
   width: 1,
 });
+import Alert from '@mui/material/Alert';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import Daypicker from "@/components/Daypicker";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Dayjs } from "dayjs";
+
 
 const Report = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const excusesOptions = Object.values(excuse).map((value) => ({
     value,
     label: value,
@@ -38,8 +42,8 @@ const Report = () => {
   const [loading, setLoading] = useState(false);
 
   const [open, setOpen] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState<"success" | "error">("success");
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState<'success' | 'error'>('success');
 
   //Daypicker
   const [date, setDate] = useState<Dayjs | null>(null);
@@ -49,23 +53,19 @@ const Report = () => {
   const ALLOWED_FILE_TYPES = ["application/pdf", "image/jpeg", "image/png"];
   const MAX_FILES = 3;
 
-  const [fieldErrors, setFieldErrors] = useState({
-    selectedExcuse: "",
-    date: "",
-    files: "",
-  });
+  const [fieldErrors, setFieldErrors] = useState({ selectedExcuse: '', date: '', files: '' });
 
   const validateFields = () => {
-    const errors = { selectedExcuse: "", date: "", files: "" };
+    const errors = { selectedExcuse: '', date: '', files: '' };
     let hasError = false;
 
     if (!selectedExcuse) {
-      errors.selectedExcuse = "Seleccioná un motivo";
+      errors.selectedExcuse = 'Seleccioná un motivo';
       hasError = true;
     }
 
     if (!date) {
-      errors.date = "Seleccioná una fecha";
+      errors.date = 'Seleccioná una fecha';
       hasError = true;
     }
 
@@ -76,10 +76,10 @@ const Report = () => {
 
     files.forEach((file) => {
       if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-        errors.files = "Solo se permiten archivos PDF, JPG o PNG";
+        errors.files = 'Solo se permiten archivos PDF, JPG o PNG';
         hasError = true;
       } else if (file.size > MAX_FILE_SIZE) {
-        errors.files = "Cada archivo debe ser menor de 5 MB";
+        errors.files = 'Cada archivo debe ser menor de 5 MB';
         hasError = true;
       }
     });
@@ -92,27 +92,27 @@ const Report = () => {
 
     if (hasError) {
       setFieldErrors(errors);
-      setAlertSeverity("error");
-      setAlertMessage("Por favor completá los campos requeridos correctamente");
+      setAlertSeverity('error');
+      setAlertMessage('Por favor completá los campos requeridos correctamente');
       setOpen(true);
       return;
     }
 
-    setFieldErrors({ selectedExcuse: "", date: "", files: "" });
+    setFieldErrors({ selectedExcuse: '', date: '', files: '' });
     setLoading(true);
 
     const formData = new FormData();
     formData.append("selectedExcuse", selectedExcuse);
-    formData.append("date", date ? date.format("DD-MM-YYYY") : "");
+    formData.append('date', date ? date.format('DD-MM-YYYY') : '');
 
     files.forEach((file) => {
       formData.append("files", file);
-    });
+    })
     const result = await submitExcuse(formData);
     if (result.success) {
-      setAlertSeverity("success");
+      setAlertSeverity('success');
     } else {
-      setAlertSeverity("error");
+      setAlertSeverity('error')
     }
     //    if (!result) {
     //   setAlertSeverity("error");
@@ -124,21 +124,24 @@ const Report = () => {
     //   setAlertSeverity("error");
     //   setAlertMessage(result.message);
     // }
-    setAlertMessage(result.message);
+    setAlertMessage(result.message)
     setLoading(false);
     setOpen(true);
 
-    if (result.success) {
-      setSelectedExcuse("");
+    if(result.success){
+      setSelectedExcuse('');
       setDate(null);
       setFiles([]);
-    } else {
-      setAlertSeverity("error");
+    }else{
+      setAlertSeverity('error')
     }
-  };
+  }
 
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
-    if (reason === "clickaway") {
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason,
+  ) => {
+    if (reason === 'clickaway') {
       return;
     }
 
@@ -146,9 +149,9 @@ const Report = () => {
   };
 
   return (
-    <Grid container flexDirection={"column"} gap={2}>
+    <Grid container flexDirection={"column"} gap={{ xs: 1.5, sm: 2 }} sx={{ maxWidth: '100%' }}>
       <BasicSelect
-        label="Motivo"
+        label="Motivos"
         options={excusesOptions}
         value={selectedExcuse}
         onChange={setSelectedExcuse}
@@ -156,9 +159,21 @@ const Report = () => {
         helperText={fieldErrors.selectedExcuse}
       />
 
-      <Daypicker value={date} onChange={setDate} error={Boolean(fieldErrors.date)} helperText={fieldErrors.date} />
+      <Daypicker
+        value={date}
+        onChange={setDate}
+        error={Boolean(fieldErrors.date)}
+        helperText={fieldErrors.date}
+      />
 
-      <Button component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>
+      <Button
+        component="label"
+        role={undefined}
+        variant="contained"
+        tabIndex={-1}
+        startIcon={<CloudUploadIcon />}
+        fullWidth={isMobile}
+      >
         Cargar archivos
         <VisuallyHiddenInput
           type="file"
@@ -169,35 +184,35 @@ const Report = () => {
             if (event.target.files) {
               const selectedFiles = Array.from(event.target.files);
 
-              let fileError = "";
+              let fileError = '';
 
               if (selectedFiles.length > MAX_FILES) {
                 fileError = `Máximo ${MAX_FILES} archivos permitidos`;
               } else {
                 const invalidFile = selectedFiles.find((file) => !ALLOWED_FILE_TYPES.includes(file.type));
                 if (invalidFile) {
-                  fileError = "Solo se permiten archivos PDF, JPG o PNG";
+                  fileError = 'Solo se permiten archivos PDF, JPG o PNG';
                 }
 
                 const largeFile = selectedFiles.find((file) => file.size > MAX_FILE_SIZE);
                 if (!fileError && largeFile) {
-                  fileError = "Cada archivo debe ser menor de 5 MB";
+                  fileError = 'Cada archivo debe ser menor de 5 MB';
                 }
               }
 
               if (fileError) {
                 setFieldErrors((prev) => ({ ...prev, files: fileError }));
-                setAlertSeverity("error");
+                setAlertSeverity('error');
                 setAlertMessage(fileError);
                 setOpen(true);
               } else {
                 setFiles(selectedFiles);
-                setFieldErrors((prev) => ({ ...prev, files: "" }));
-                setAlertSeverity("success");
+                setFieldErrors((prev) => ({ ...prev, files: '' }));
+                setAlertSeverity('success');
                 setAlertMessage(
                   selectedFiles.length === 1
-                    ? "Archivo adjunto correctamente"
-                    : `${selectedFiles.length} archivos adjuntos correctamente`,
+                    ? 'Archivo adjunto correctamente'
+                    : `${selectedFiles.length} archivos adjuntos correctamente`
                 );
                 setOpen(true);
               }
@@ -205,30 +220,50 @@ const Report = () => {
           }}
         />
       </Button>
+
       {files.length > 0 && (
-        <Grid
+        <Box
           sx={{
             border: "1px solid #000",
             borderRadius: 1,
-            padding: 2,
+            padding: { xs: 1, sm: 2 },
           }}
         >
           <strong>Archivo adjunto:</strong>
 
           {files.map((file, index) => (
-            <Grid key={index} container justifyContent="space-between" alignItems="center" sx={{ mt: 1 }}>
-              <span>{file.name}</span>
+            <Grid
+              key={index}
+              container
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ mt: 1 }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  maxWidth: { xs: 'calc(100% - 40px)', sm: '100%' }
+                }}
+              >
+                {file.name}
+              </Typography>
 
               <IconButton
                 aria-label="delete"
                 color="error"
-                onClick={() => setFiles((prev) => prev.filter((_, i) => i !== index))}
+                size={isMobile ? 'small' : 'medium'}
+                onClick={() =>
+                  setFiles((prev) => prev.filter((_, i) => i !== index))
+                }
               >
                 <DeleteIcon fontSize="inherit" />
               </IconButton>
             </Grid>
           ))}
-        </Grid>
+        </Box>
       )}
 
       {fieldErrors.files && (
@@ -237,16 +272,27 @@ const Report = () => {
         </Typography>
       )}
 
-      <Button variant="contained" disabled={loading} onClick={() => handleSubmit()}>
-        {loading ? "Enviando..." : "Enviar"}
+      <Button
+        variant="contained"
+        disabled={loading}
+        onClick={() => handleSubmit()}
+        fullWidth={isMobile}
+      >
+        {loading ? 'Enviando...' : 'Enviar'}
       </Button>
+
       <Snackbar
         open={open}
         autoHideDuration={5000}
         onClose={handleClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleClose} severity={alertSeverity} variant="filled" sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleClose}
+          severity={alertSeverity}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
           {alertMessage}
         </Alert>
       </Snackbar>
