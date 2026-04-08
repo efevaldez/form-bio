@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import Logout from '@/components/Logout';
-import { createUser } from '@/server/actions/createUser/createUser';
-import { Paper, Typography } from '@mui/material';
-import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import Logout from "@/components/Logout";
+import { createUser } from "@/server/actions/createUser/createUser";
+import { Paper, Typography } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import { useState } from "react";
 
 export default function UserForm({
   supervisorOptions = [],
@@ -23,54 +23,54 @@ export default function UserForm({
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({
-    name: '',
-    file: '',
-    dni: '',
-    site: '',
-    supervisor: '',
+    name: "",
+    file: "",
+    dni: "",
+    site: "",
+    supervisor: "",
   });
   const [formData, setFormData] = useState({
-    name: '',
-    file: '',
-    dni: '',
-    site: '',
-    supervisor: '',
+    name: "",
+    file: "",
+    dni: "",
+    site: "",
+    supervisor: "",
   });
 
-  const formatFile = (value: string) => value.replace(/\D/g, '').slice(0, 4);
+  const formatFile = (value: string) => value.replace(/\D/g, "").slice(0, 4);
   const formatDni = (value: string) => {
-    const digits = value.replace(/\D/g, '').slice(0, 8);
+    const digits = value.replace(/\D/g, "").slice(0, 8);
     if (digits.length <= 2) return digits;
     if (digits.length <= 5) return `${digits.slice(0, 2)}.${digits.slice(2)}`;
     return `${digits.slice(0, 2)}.${digits.slice(2, 5)}.${digits.slice(5)}`;
   };
 
   const validateFields = () => {
-    const errors = { name: '', file: '', dni: '', site: '', supervisor: '' };
+    const errors = { name: "", file: "", dni: "", site: "", supervisor: "" };
     let hasError = false;
 
     if (!formData.name.trim()) {
-      errors.name = 'El nombre es requerido';
+      errors.name = "El nombre es requerido";
       hasError = true;
     }
 
     if (!formData.file.trim()) {
-      errors.file = 'El legajo es requerido';
+      errors.file = "El legajo es requerido";
       hasError = true;
     }
 
     if (!formData.dni.trim()) {
-      errors.dni = 'El DNI es requerido';
+      errors.dni = "El DNI es requerido";
       hasError = true;
     }
 
     if (!formData.site.trim()) {
-      errors.site = 'El site es requerido';
+      errors.site = "El site es requerido";
       hasError = true;
     }
 
     if (!formData.supervisor) {
-      errors.supervisor = 'Seleccionar un supervisor/a';
+      errors.supervisor = "Seleccionar un supervisor/a";
       hasError = true;
     }
 
@@ -85,24 +85,24 @@ export default function UserForm({
       return;
     }
 
-    setFieldErrors({ name: '', file: '', dni: '', site: '', supervisor: '' });
+    setFieldErrors({ name: "", file: "", dni: "", site: "", supervisor: "" });
     setError(null);
     setLoading(true);
     try {
       const fd = new FormData();
-      fd.append('name', formData.name);
-      fd.append('file', formData.file.replace(/\D/g, ''));
-      fd.append('dni', formData.dni.replace(/\D/g, ''));
-      fd.append('site', formData.site);
-      fd.append('supervisor', formData.supervisor);
+      fd.append("name", formData.name);
+      fd.append("file", formData.file.replace(/\D/g, ""));
+      fd.append("dni", formData.dni.replace(/\D/g, ""));
+      fd.append("site", formData.site);
+      fd.append("supervisor", formData.supervisor);
       await createUser(fd);
       setSuccess(true);
       setTimeout(() => {
-        window.location.assign('/admin/users');
+        window.location.assign("/admin/users");
       }, 1500);
     } catch (error) {
-      if (error instanceof Error && error.message !== 'NEXT_REDIRECT') {
-        setError('Error al crear el usuario. Intente nuevamente.');
+      if (error instanceof Error && error.message !== "NEXT_REDIRECT") {
+        setError("Error al crear el usuario. Intente nuevamente.");
       }
     } finally {
       setLoading(false);
@@ -113,12 +113,12 @@ export default function UserForm({
     <>
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '20px 40px',
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "20px 40px",
           maxWidth: 900,
-          mx: 'auto',
+          mx: "auto",
         }}
       >
         <Typography variant="h4" component="h1" padding={4}>
@@ -131,15 +131,15 @@ export default function UserForm({
         sx={{
           p: 4,
           mt: 8,
-          mx: 'auto',
+          mx: "auto",
           maxWidth: 550,
-          borderRadius: '16px',
+          borderRadius: "16px",
         }}
       >
         <Box
           component="form"
           onSubmit={handleSubmit}
-          sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 480 }}
+          sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 480 }}
         >
           {error && <Alert severity="error">{error}</Alert>}
           {success && <Alert severity="success">Usuario creado correctamente.</Alert>}
@@ -164,8 +164,8 @@ export default function UserForm({
             slotProps={{
               htmlInput: {
                 maxLength: 4,
-                inputMode: 'numeric',
-                pattern: '[0-9]*',
+                inputMode: "numeric",
+                pattern: "[0-9]*",
               },
             }}
           />
@@ -180,8 +180,8 @@ export default function UserForm({
             slotProps={{
               htmlInput: {
                 maxLength: 11,
-                inputMode: 'numeric',
-                pattern: '[0-9.]*',
+                inputMode: "numeric",
+                pattern: "[0-9.]*",
               },
             }}
           />
@@ -217,7 +217,7 @@ export default function UserForm({
           </FormControl>
 
           <Button type="submit" variant="contained" disabled={loading}>
-            {loading ? 'Creando...' : 'Crear'}
+            {loading ? "Creando..." : "Crear"}
           </Button>
         </Box>
       </Paper>

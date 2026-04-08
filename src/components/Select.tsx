@@ -1,10 +1,10 @@
-'use client';
-import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import MuiSelect from '@mui/material/Select';
+"use client";
+import Box from "@mui/material/Box";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import MuiSelect from "@mui/material/Select";
 
 type Option = {
   value: string;
@@ -32,7 +32,7 @@ export default function Select({
   required?: boolean;
 }) {
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: "100%" }}>
       <FormControl fullWidth size="small" error={Boolean(error)}>
         <InputLabel id={`${id}-label`}>{label}</InputLabel>
 
@@ -40,7 +40,7 @@ export default function Select({
           labelId={`${id}-label`}
           id={id}
           name={name}
-          value={value ?? ''}
+          value={value ?? ""}
           label={label}
           onChange={(e) => onChange?.(e.target.value as string)}
           required

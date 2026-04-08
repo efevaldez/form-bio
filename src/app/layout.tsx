@@ -1,9 +1,9 @@
-import Providers from '@/components/Providers';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
-import type { Metadata } from 'next';
+import Providers from "@/components/Providers";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Reporte de ausencias Bio',
+  title: "Reporte de ausencias Bio",
 };
 
 export default function RootLayout({

@@ -1,8 +1,8 @@
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Dayjs } from 'dayjs';
-import 'dayjs/locale/es';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { Dayjs } from "dayjs";
+import "dayjs/locale/es";
 
 type DaypickerProps = {
   value: Dayjs | null;
@@ -18,14 +18,14 @@ export default function Daypicker({ value, onChange, error, helperText }: Daypic
         slotProps={{
           textField: {
             fullWidth: true,
-            variant: 'outlined',
-            size: 'small',
+            variant: "outlined",
+            size: "small",
             error: Boolean(error),
             helperText: helperText,
             sx: {
-              '& .MuiPickersInputBase-root': {
-                backgroundColor: 'white',
-                borderRadius: '10px',
+              "& .MuiPickersInputBase-root": {
+                backgroundColor: "white",
+                borderRadius: "10px",
               },
             },
           },

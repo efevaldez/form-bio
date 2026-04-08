@@ -1,24 +1,24 @@
 // esto sería el dashboard de todos los usuarios
 
-import Logout from '@/components/Logout';
-import Searchbar from '@/components/Searchbar';
-import UserTable, { User } from '@/components/UserTable';
-import { loginAuth } from '@/pages/api/auth/[...nextauth]';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { IconButton } from '@mui/material';
-import { sql } from '@vercel/postgres';
-import { getServerSession } from 'next-auth';
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import Logout from "@/components/Logout";
+import Searchbar from "@/components/Searchbar";
+import UserTable, { User } from "@/components/UserTable";
+import { loginAuth } from "@/pages/api/auth/[...nextauth]";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { IconButton } from "@mui/material";
+import { sql } from "@vercel/postgres";
+import { getServerSession } from "next-auth";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function AdminUsersPage({ searchParams }: { searchParams: Promise<{ search?: string }> }) {
   const session = await getServerSession(loginAuth);
 
   if (!session) {
-    redirect('/login');
+    redirect("/login");
   }
 
-  const { search = '' } = await searchParams;
+  const { search = "" } = await searchParams;
 
   let query;
 
@@ -31,7 +31,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
       from "Users" usr 
        join "Users" sup 
       on usr.supervisor=sup.file 
-      where usr.name ilike ${'%' + search + '%'} or usr.file::text ilike ${'%' + search + '%'} or sup.name ilike ${'%' + search + '%'}
+      where usr.name ilike ${"%" + search + "%"} or usr.file::text ilike ${"%" + search + "%"} or sup.name ilike ${"%" + search + "%"}
       order by usr.name asc
     `;
   } else {
@@ -51,21 +51,21 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
   const users = result.rows as User[];
 
   return (
-    <div style={{ padding: '2rem' }}>
+    <div style={{ padding: "2rem" }}>
       <header
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
         <h1>Nómina activa Biosidus</h1>
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginLeft: 'auto',
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            marginLeft: "auto",
           }}
         >
           <Link href="/admin/users/newUser">

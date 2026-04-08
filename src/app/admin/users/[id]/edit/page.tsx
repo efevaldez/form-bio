@@ -1,5 +1,5 @@
-import { sql } from '@vercel/postgres';
-import EditUserForm from './editUserForm';
+import { sql } from "@vercel/postgres";
+import EditUserForm from "./editUserForm";
 
 interface User {
   id: string;
@@ -21,7 +21,7 @@ export default async function EditUserPage({ params }: { params: { id: string } 
   }));
 
   return (
-    <div style={{ padding: '2rem' }}>
+    <div style={{ padding: "2rem" }}>
       <h1>Editar usuario</h1>
       <EditUserForm user={user} supervisorOptions={supervisorOptions} />
     </div>

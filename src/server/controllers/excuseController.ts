@@ -1,8 +1,8 @@
-'use server';
+"use server";
 
-import { cookies } from 'next/headers';
-import nodemailer from 'nodemailer';
-import { getUserByFile } from '../queries/users';
+import { cookies } from "next/headers";
+import nodemailer from "nodemailer";
+import { getUserByFile } from "../queries/users";
 
 type SubmitExcuseResult = {
   success: boolean;
@@ -10,22 +10,22 @@ type SubmitExcuseResult = {
 };
 
 export async function submitExcuse(formData: FormData): Promise<SubmitExcuseResult> {
-  const hash = (await cookies()).get('hash')?.value;
+  const hash = (await cookies()).get("hash")?.value;
 
   if (!hash) {
     return {
       success: false,
-      message: 'Sesión expirada. Volvé a iniciar sesión.',
+      message: "Sesión expirada. Volvé a iniciar sesión.",
     };
   }
 
-  const selectedExcuse = formData.get('selectedExcuse') as string;
-  const files = formData.getAll('files') as File[];
+  const selectedExcuse = formData.get("selectedExcuse") as string;
+  const files = formData.getAll("files") as File[];
 
   const attachments = await Promise.all(
     files.map(async (file) => {
       const buffer = Buffer.from(await file.arrayBuffer());
-      if (buffer.length > 2_000_000) throw new Error('Archivo demasiado grande');
+      if (buffer.length > 2_000_000) throw new Error("Archivo demasiado grande");
       return {
         filename: file.name,
         content: Buffer.from(await file.arrayBuffer()),
@@ -37,14 +37,14 @@ export async function submitExcuse(formData: FormData): Promise<SubmitExcuseResu
     const user = await getUserByFile(hash);
 
     console.log(user);
-    console.log('rrhh', user?.siteResponsibleEmail);
-    console.log('supervisor', user?.supervisoremail);
+    console.log("rrhh", user?.siteResponsibleEmail);
+    console.log("supervisor", user?.supervisoremail);
 
     const recipients = [user?.supervisoremail, ...(user?.siteResponsibleEmail || [])];
-    console.log('Mail enviado a:', recipients);
+    console.log("Mail enviado a:", recipients);
 
     const transporter = nodemailer.createTransport({
-      host: 'smtp.office365.com',
+      host: "smtp.office365.com",
       port: 587,
       secure: false,
       auth: {
@@ -56,13 +56,13 @@ export async function submitExcuse(formData: FormData): Promise<SubmitExcuseResu
     await transporter.sendMail({
       from: `${process.env.MAIL_USER}`,
       to: [`${recipients}`],
-      subject: 'Nueva inasistencia recibida',
+      subject: "Nueva inasistencia recibida",
       html: `
         <h3>¡Hola! Se reportó una nueva ausencia:</h3>
         <p><b>Motivo:</b> ${selectedExcuse}</p>
         <p><b>Colaborador/a:</b> ${user?.name}</p>
         <p><b>N° de Legajo:</b> ${user?.file}</p>
-        <p><b>Fecha de ausencia:</b> ${formData.get('date')}</p>
+        <p><b>Fecha de ausencia:</b> ${formData.get("date")}</p>
        
         <p>¡Gracias!</p>
       `,
@@ -71,14 +71,14 @@ export async function submitExcuse(formData: FormData): Promise<SubmitExcuseResu
 
     return {
       success: true,
-      message: 'Reporte enviado correctamente',
+      message: "Reporte enviado correctamente",
     };
   } catch (error) {
-    console.error('Error al enviar el reporte:', error);
+    console.error("Error al enviar el reporte:", error);
 
     return {
       success: false,
-      message: 'Ocurrió un error al enviar el reporte',
+      message: "Ocurrió un error al enviar el reporte",
     };
   }
 }
