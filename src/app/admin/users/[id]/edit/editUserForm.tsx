@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
-import { Paper, Typography } from "@mui/material";
-import { updateUser } from "@/server/actions/updateUser/updateUser";
-import Logout from "@/components/Logout";
+import Logout from '@/components/Logout';
+import { updateUser } from '@/server/actions/updateUser/updateUser';
+import { Paper, Typography } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import { useState } from 'react';
 
 interface User {
- // id: number;
+  // id: number;
   name: string;
   file: string;
   dni: string;
@@ -36,17 +36,17 @@ export default function EditUserForm({
     name: '',
     file: '',
     site: '',
-    supervisor: ''
+    supervisor: '',
   });
 
   const validateFields = (formData: FormData) => {
     const errors = { name: '', file: '', site: '', supervisor: '' };
     let hasError = false;
 
-    const name = (formData.get('name') as string || '').trim();
-   const file = (formData.get('file') as string || '').trim();
-    const site = (formData.get('site') as string || '').trim();
-    const supervisor = formData.get('supervisor') as string || '';
+    const name = ((formData.get('name') as string) || '').trim();
+    const file = ((formData.get('file') as string) || '').trim();
+    const site = ((formData.get('site') as string) || '').trim();
+    const supervisor = (formData.get('supervisor') as string) || '';
 
     if (!name) {
       errors.name = 'El nombre es requerido';
@@ -80,15 +80,15 @@ export default function EditUserForm({
       return;
     }
 
-    setFieldErrors({ name: '',  site: '', file: '', supervisor: '' });
+    setFieldErrors({ name: '', site: '', file: '', supervisor: '' });
     setError(null);
     setLoading(true);
     try {
       await updateUser(user.file, formData);
       setSuccess(true);
-      setTimeout(() => window.location.assign("/admin/users"), 1500);
+      setTimeout(() => window.location.assign('/admin/users'), 1500);
     } catch {
-      setError("Error al actualizar el usuario. Intente nuevamente.");
+      setError('Error al actualizar el usuario. Intente nuevamente.');
     } finally {
       setLoading(false);
     }
@@ -96,19 +96,19 @@ export default function EditUserForm({
 
   return (
     <>
-      <Box 
-        sx={{ 
-          display: "flex", 
-          flexDirection: { xs: "column", sm: "row" },
-          justifyContent: { xs: "flex-start", sm: "space-between" },
-          alignItems: { xs: "flex-start", sm: "center" },
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          justifyContent: { xs: 'flex-start', sm: 'space-between' },
+          alignItems: { xs: 'flex-start', sm: 'center' },
           gap: { xs: 1, sm: 2 },
-          padding: { xs: "1rem", sm: "1.25rem", md: "1.5rem" },
-          maxWidth: 900,                  
-          mx: "auto"                      
+          padding: { xs: '1rem', sm: '1.25rem', md: '1.5rem' },
+          maxWidth: 900,
+          mx: 'auto',
         }}
       >
-        <Typography variant="h4" component="h1" sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}>
+        <Typography variant="h4" component="h1" sx={{ fontSize: { xs: '1.5rem', sm: '2rem' } }}>
           Editar usuario
         </Typography>
         <Logout />
@@ -118,17 +118,17 @@ export default function EditUserForm({
         sx={{
           p: { xs: 2, sm: 3, md: 4 },
           mt: { xs: 4, sm: 6, md: 8 },
-          mx: "auto",
-          maxWidth: { xs: "95%", sm: 550 },
-          marginLeft: "auto",
-          marginRight: "auto",
-          borderRadius: '16px'
+          mx: 'auto',
+          maxWidth: { xs: '95%', sm: 550 },
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          borderRadius: '16px',
         }}
       >
         <Box
           component="form"
           onSubmit={handleSubmit}
-          sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}
+          sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}
         >
           {error && <Alert severity="error">{error}</Alert>}
           {success && <Alert severity="success">Usuario actualizado correctamente.</Alert>}
@@ -150,7 +150,7 @@ export default function EditUserForm({
             error={Boolean(fieldErrors.file)}
             helperText={fieldErrors.file}
             fullWidth
-          /> 
+          />
           <TextField name="dni" label="DNI" defaultValue={user.dni} required fullWidth />
           <TextField
             name="site"
@@ -175,7 +175,7 @@ export default function EditUserForm({
           </FormControl>
 
           <Button type="submit" variant="contained" disabled={loading} fullWidth>
-            {loading ? "Guardando..." : "Guardar cambios"}
+            {loading ? 'Guardando...' : 'Guardar cambios'}
           </Button>
         </Box>
       </Paper>

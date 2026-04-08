@@ -1,24 +1,23 @@
 // esto sería el dashboard de todos los usuarios
 
-import Logout from "@/components/Logout";
-import Searchbar from "@/components/Searchbar";
-import UserTable, { User } from "@/components/UserTable";
-import { loginAuth } from "@/pages/api/auth/[...nextauth]";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Box, Container, IconButton } from "@mui/material";
-import { sql } from "@vercel/postgres";
-import { getServerSession } from "next-auth";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import Logout from '@/components/Logout';
+import Searchbar, { User } from '@/components/Searchbar';
+import { loginAuth } from '@/pages/api/auth/[...nextauth]';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { Box, Container, IconButton } from '@mui/material';
+import { sql } from '@vercel/postgres';
+import { getServerSession } from 'next-auth';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default async function AdminUsersPage({ searchParams }: { searchParams: Promise<{ search?: string }> }) {
   const session = await getServerSession(loginAuth);
 
   if (!session) {
-    redirect("/login");
+    redirect('/login');
   }
 
-  const { search = "" } = await searchParams;
+  const { search = '' } = await searchParams;
 
   let query;
 
@@ -31,7 +30,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
       from "Users" usr 
        join "Users" sup 
       on usr.supervisor=sup.file 
-      where usr.name ilike ${"%" + search + "%"} or usr.file::text ilike ${"%" + search + "%"} or sup.name ilike ${"%" + search + "%"}
+      where usr.name ilike ${'%' + search + '%'} or usr.file::text ilike ${'%' + search + '%'} or sup.name ilike ${'%' + search + '%'}
       order by usr.name asc
     `;
   } else {
@@ -55,23 +54,23 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
       <Box
         component="header"
         sx={{
-          display: "flex",
-          flexDirection: { xs: "column", sm: "row" },
-          justifyContent: { xs: "flex-start", sm: "space-between" },
-          alignItems: { xs: "flex-start", sm: "center" },
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          justifyContent: { xs: 'flex-start', sm: 'space-between' },
+          alignItems: { xs: 'flex-start', sm: 'center' },
           gap: { xs: 1, sm: 2 },
           mb: { xs: 2, sm: 3 },
-          flexWrap: "wrap",
+          flexWrap: 'wrap',
         }}
       >
-        <h1 style={{ margin: 0, fontSize: "clamp(1.25rem, 5vw, 2rem)" }}>Nómina activa Biosidus</h1>
+        <h1 style={{ margin: 0, fontSize: 'clamp(1.25rem, 5vw, 2rem)' }}>Nómina activa Biosidus</h1>
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
+            display: 'flex',
+            alignItems: 'center',
             gap: 1,
-            ml: { xs: 0, sm: "auto" },
-            flexWrap: "wrap",
+            ml: { xs: 0, sm: 'auto' },
+            flexWrap: 'wrap',
           }}
         >
           <Link href="/admin/users/newUser">
@@ -83,8 +82,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
         </Box>
       </Box>
       <Box>
-        <Searchbar initialSearch={search} />
-        {users.length > 0 ? <UserTable users={users} /> : <p>No se encontraron resultados</p>}
+        <Searchbar users={users} initialSearch={search} />
       </Box>
     </Container>
   );

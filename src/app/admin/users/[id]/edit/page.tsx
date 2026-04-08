@@ -1,6 +1,6 @@
-import { sql } from "@vercel/postgres";
-import EditUserForm from "./editUserForm";
-import { Container, Box } from "@mui/material";
+import { Box, Container } from '@mui/material';
+import { sql } from '@vercel/postgres';
+import EditUserForm from './editUserForm';
 
 interface User {
   id: string;

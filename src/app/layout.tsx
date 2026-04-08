@@ -1,15 +1,15 @@
-import Providers from "@/components/Providers";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
-import type { Metadata, Viewport } from "next";
+import Providers from '@/components/Providers';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+import type { Metadata, Viewport } from 'next';
 
 export const viewport: Viewport = {
-  width: "device-width",
+  width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
 };
 
 export const metadata: Metadata = {
-  title: "Reporte de ausencias Bio",
+  title: 'Reporte de ausencias Bio',
 };
 
 export default function RootLayout({
