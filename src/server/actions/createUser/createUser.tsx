@@ -1,29 +1,26 @@
-"use server";
+'use server';
 
-import { sql } from "@vercel/postgres";
-import { revalidatePath } from "next/cache";
-
+import { sql } from '@vercel/postgres';
+import { revalidatePath } from 'next/cache';
 
 export async function createUser(formData: FormData) {
-  const name = formData.get("name") as string;
-  const file = formData.get("file") as string;
-  const dni = formData.get("dni") as string;
-  const supervisor = formData.get("supervisor") as string;
-  const siteRaw = formData.get("site") as string;
+  const name = formData.get('name') as string;
+  const file = formData.get('file') as string;
+  const dni = formData.get('dni') as string;
+  const supervisor = formData.get('supervisor') as string;
+  const siteRaw = formData.get('site') as string;
 
-    const site = parseInt(siteRaw, 10);
+  const site = parseInt(siteRaw, 10);
 
   if (isNaN(site)) {
-    throw new Error("El site debe ser un número válido.");
+    throw new Error('El site debe ser un número válido.');
   }
 
-  
   if (!name || !file || !dni || !supervisor || !site) {
-    throw new Error("Todos los campos son obligatorios.");
+    throw new Error('Todos los campos son obligatorios.');
   }
 
-
-  console.log("Datos recibidos:", { name, file, dni, supervisor, site });
+  console.log('Datos recibidos:', { name, file, dni, supervisor, site });
 
   try {
     await sql`
@@ -31,19 +28,14 @@ export async function createUser(formData: FormData) {
       VALUES (${name}, ${file}, ${dni}, ${supervisor}, ${site})
     `;
 
-   
-    revalidatePath("/admin/users");
+    revalidatePath('/admin/users');
   } catch (error) {
-    console.error("Error al crear el usuario:", error);
-    throw new Error("Error al crear el usuario");
+    console.error('Error al crear el usuario:', error);
+    throw new Error('Error al crear el usuario');
   }
 
-  revalidatePath("/admin/users");
+  revalidatePath('/admin/users');
 }
-
-
-
-
 
 // "use server";
 
@@ -66,10 +58,7 @@ export async function createUser(formData: FormData) {
 //   } catch (error) {
 //     console.error("Error al crear el usuario", error);
 //    throw new Error("Error al crear el usuario");
-//   } 
-
-
-
+//   }
 
 // console.log("Datos recibidos:", { name, file, dni, supervisor, site });
 //   revalidatePath("/admin/users");

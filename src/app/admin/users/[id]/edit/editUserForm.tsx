@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
-import { updateUser } from "@/server/actions/updateUser/updateUser";
+import { updateUser } from '@/server/actions/updateUser/updateUser';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import { useState } from 'react';
 
 interface User {
- // id: number;
+  // id: number;
   name: string;
   file: string;
   dni: string;
@@ -36,16 +36,20 @@ export default function EditUserForm({
     try {
       await updateUser(user.file, formData);
       setSuccess(true);
-      setTimeout(() => window.location.assign("/admin/users"), 1500);
+      setTimeout(() => window.location.assign('/admin/users'), 1500);
     } catch {
-      setError("Error al actualizar el usuario. Intente nuevamente.");
+      setError('Error al actualizar el usuario. Intente nuevamente.');
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <Box component="form" action={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 480 }}>
+    <Box
+      component="form"
+      action={handleSubmit}
+      sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 480 }}
+    >
       {error && <Alert severity="error">{error}</Alert>}
       {success && <Alert severity="success">Usuario actualizado correctamente.</Alert>}
 
@@ -66,7 +70,7 @@ export default function EditUserForm({
       </FormControl>
 
       <Button type="submit" variant="contained" disabled={loading}>
-        {loading ? "Guardando..." : "Guardar cambios"}
+        {loading ? 'Guardando...' : 'Guardar cambios'}
       </Button>
     </Box>
   );

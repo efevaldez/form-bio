@@ -1,8 +1,8 @@
-import { Dayjs } from "dayjs";
-import "dayjs/locale/es";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { Dayjs } from 'dayjs';
+import 'dayjs/locale/es';
 
 type DaypickerProps = {
   value: Dayjs | null;
@@ -15,19 +15,17 @@ export default function Daypicker({ value, onChange, error, helperText }: Daypic
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
       <DatePicker
-      slotProps={{
-        textField: {
+        slotProps={{
+          textField: {
             fullWidth: true,
-            variant: "outlined",
-            size: "small",
+            variant: 'outlined',
+            size: 'small',
             error: Boolean(error),
             helperText: helperText,
             sx: {
-              backgroundColor: "#fff",
-              borderRadius: "10px",
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "10px",
-                height: "56",
+              '& .MuiPickersInputBase-root': {
+                backgroundColor: 'white',
+                borderRadius: '10px',
               },
             },
           },
@@ -40,21 +38,12 @@ export default function Daypicker({ value, onChange, error, helperText }: Daypic
   );
 }
 
-
-
-
-
-
-
-
-
 // import react, { useState } from 'react';
 // import dayjs , { Dayjs } from 'dayjs';
 // import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 // import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
 
 // export default function ResponsiveDatePickers() {
 //     const [ date, setDate ] = useState<Dayjs | null>(dayjs('2026-01-05'));
@@ -66,7 +55,7 @@ export default function Daypicker({ value, onChange, error, helperText }: Daypic
 //         ]}
 //       >
 //         <DemoItem label="Ingresá la fecha de tu ausencia:">
-//           <DatePicker value={date} 
+//           <DatePicker value={date}
 //           onChange={(newValue: Dayjs | null) => setDate(newValue)} />
 //         </DemoItem>
 //       </DemoContainer>

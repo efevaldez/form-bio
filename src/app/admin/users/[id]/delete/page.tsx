@@ -1,8 +1,8 @@
-import { sql } from "@vercel/postgres";
-import { deleteUser } from "@/server/actions/deleteUser/deleteUser";
-import { redirect } from "next/navigation";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import { deleteUser } from '@/server/actions/deleteUser/deleteUser';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import { sql } from '@vercel/postgres';
+import { redirect } from 'next/navigation';
 
 export default async function DeleteUserPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -11,19 +11,21 @@ export default async function DeleteUserPage({ params }: { params: Promise<{ id:
   const user = rows[0];
 
   if (!user) {
-    redirect("/admin/users");
+    redirect('/admin/users');
   }
 
   async function handleDelete() {
-    "use server";
+    'use server';
     await deleteUser(id);
-    redirect("/admin/users");
+    redirect('/admin/users');
   }
 
   return (
-    <Box sx={{ padding: "2rem" }}>
-      <h1>¿Estás seguro que querés eliminar a <strong>{user.name}</strong>?</h1>
-      <Box sx={{ display: "flex", gap: 2, marginTop: "1rem" }}>
+    <Box sx={{ padding: '2rem' }}>
+      <h1>
+        ¿Estás seguro que querés eliminar a <strong>{user.name}</strong>?
+      </h1>
+      <Box sx={{ display: 'flex', gap: 2, marginTop: '1rem' }}>
         <form action={handleDelete}>
           <Button type="submit" variant="contained" color="error">
             Sí, eliminar
@@ -36,10 +38,6 @@ export default async function DeleteUserPage({ params }: { params: Promise<{ id:
     </Box>
   );
 }
-
-
-
-
 
 // import { deleteUser } from "@/server/actions/deleteUser/deleteUser";
 // import { redirect } from "next/navigation";
