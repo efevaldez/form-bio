@@ -113,14 +113,16 @@ export default function UserForm({
     <Box 
         sx={{ 
           display: "flex", 
-          justifyContent: "space-between", 
-          alignItems: "center",           
-          padding: "20px 40px",           
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: { xs: "flex-start", sm: "space-between" },
+          alignItems: { xs: "flex-start", sm: "center" },
+          gap: { xs: 1, sm: 2 },
+          padding: { xs: "1rem", sm: "1.25rem", md: "1.5rem" },
           maxWidth: 900,                  
           mx: "auto"                      
         }}
       >
-     <Typography variant="h4" component="h1" padding={4}>
+     <Typography variant="h4" component="h1" sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}>
         Crear nuevo usuario
       </Typography>
       <Logout />
@@ -128,16 +130,18 @@ export default function UserForm({
     <Paper
     elevation={3}
     sx={{
-      p: 4,
-      mt: 8,
+      p: { xs: 2, sm: 3, md: 4 },
+      mt: { xs: 4, sm: 6, md: 8 },
       mx: "auto",
-      maxWidth: 550,
+      maxWidth: { xs: "95%", sm: 550 },
+      marginLeft: "auto",
+      marginRight: "auto",
       borderRadius: '16px'
     }}>
     <Box
       component="form"
       onSubmit={handleSubmit}
-      sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 480 }}
+      sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}
     >
       {error && <Alert severity="error">{error}</Alert>}
       {success && <Alert severity="success">Usuario creado correctamente.</Alert>} 
@@ -150,6 +154,7 @@ export default function UserForm({
         required
         error={Boolean(fieldErrors.name)}
         helperText={fieldErrors.name}
+        fullWidth
       />
       <TextField
         name="file"
@@ -159,6 +164,7 @@ export default function UserForm({
         required
         error={Boolean(fieldErrors.file)}
         helperText={fieldErrors.file}
+        fullWidth
         slotProps={{
           htmlInput: {
             maxLength: 4,
@@ -175,6 +181,7 @@ export default function UserForm({
         required
         error={Boolean(fieldErrors.dni)}
         helperText={fieldErrors.dni}
+        fullWidth
         slotProps={{
           htmlInput: {
             maxLength: 11,
@@ -191,9 +198,10 @@ export default function UserForm({
         required
         error={Boolean(fieldErrors.site)}
         helperText={fieldErrors.site}
+        fullWidth
       />
 
-      <FormControl required error={Boolean(fieldErrors.supervisor)}>
+      <FormControl fullWidth required error={Boolean(fieldErrors.supervisor)}>
         <InputLabel id="supervisor-label">Supervisor/a</InputLabel>
         <Select
           labelId="supervisor-label"
@@ -214,7 +222,7 @@ export default function UserForm({
         {fieldErrors.supervisor && <FormHelperText>{fieldErrors.supervisor}</FormHelperText>}
       </FormControl>
 
-      <Button type="submit" variant="contained" disabled={loading}>
+      <Button type="submit" variant="contained" disabled={loading} fullWidth>
         {loading ? "Creando..." : "Crear"}
       </Button>
     </Box>

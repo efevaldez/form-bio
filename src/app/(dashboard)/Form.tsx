@@ -3,7 +3,7 @@
 import BasicSelect from "@/components/Select";
 import { submitExcuse } from "@/server/controllers/excuseController";
 import { excuse } from "@/utils/const";
-import { Button, Grid, IconButton, styled, Typography } from "@mui/material";
+import { Button, Grid, IconButton, styled, Typography, Box, useMediaQuery, useTheme } from "@mui/material";
 import { useState } from "react";
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 
@@ -26,6 +26,9 @@ import { Dayjs } from "dayjs";
 
 
 const Report = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const excusesOptions = Object.values(excuse).map((value) => ({
     value,
     label: value,
@@ -146,7 +149,7 @@ const Report = () => {
   };
 
   return (
-    <Grid container flexDirection={"column"} gap={2}>
+    <Grid container flexDirection={"column"} gap={{ xs: 1.5, sm: 2 }} sx={{ maxWidth: '100%' }}>
       <BasicSelect
         label="Motivos"
         options={excusesOptions}
@@ -155,8 +158,6 @@ const Report = () => {
         error={Boolean(fieldErrors.selectedExcuse)}
         helperText={fieldErrors.selectedExcuse}
       />
-
-
 
       <Daypicker
         value={date}
@@ -171,7 +172,7 @@ const Report = () => {
         variant="contained"
         tabIndex={-1}
         startIcon={<CloudUploadIcon />}
-
+        fullWidth={isMobile}
       >
         Cargar archivos
         <VisuallyHiddenInput
@@ -218,14 +219,14 @@ const Report = () => {
             }
           }}
         />
-
       </Button>
+
       {files.length > 0 && (
-        <Grid
+        <Box
           sx={{
             border: "1px solid #000",
             borderRadius: 1,
-            padding: 2,
+            padding: { xs: 1, sm: 2 },
           }}
         >
           <strong>Archivo adjunto:</strong>
@@ -238,20 +239,32 @@ const Report = () => {
               alignItems="center"
               sx={{ mt: 1 }}
             >
-              <span>{file.name}</span>
+              <Typography
+                variant="body2"
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  maxWidth: { xs: 'calc(100% - 40px)', sm: '100%' }
+                }}
+              >
+                {file.name}
+              </Typography>
 
-              <IconButton aria-label="delete" color="error"
+              <IconButton
+                aria-label="delete"
+                color="error"
+                size={isMobile ? 'small' : 'medium'}
                 onClick={() =>
                   setFiles((prev) => prev.filter((_, i) => i !== index))
-                }>
+                }
+              >
                 <DeleteIcon fontSize="inherit" />
               </IconButton>
             </Grid>
           ))}
-        </Grid>
+        </Box>
       )}
-
-
 
       {fieldErrors.files && (
         <Typography variant="caption" color="error" sx={{ mt: 0.5 }}>
@@ -259,10 +272,21 @@ const Report = () => {
         </Typography>
       )}
 
-      <Button variant="contained" disabled={loading} onClick={() => handleSubmit()}>
+      <Button
+        variant="contained"
+        disabled={loading}
+        onClick={() => handleSubmit()}
+        fullWidth={isMobile}
+      >
         {loading ? 'Enviando...' : 'Enviar'}
       </Button>
-      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
         <Alert
           onClose={handleClose}
           severity={alertSeverity}

@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { loginAuth } from "@/pages/api/auth/[...nextauth]";
-import { IconButton } from "@mui/material";
+import { Box, IconButton, Container } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Searchbar, { type User } from "@/components/Searchbar";
 import Logout from "@/components/Logout";
@@ -51,21 +51,40 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
   const users = result.rows as User[];
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h1>Nómina activa Biosidus</h1>
-        <div style={{ display: "flex", alignItems: "center" , gap:'8px', marginLeft:'auto'}}>
-        
-        <Link href="/admin/users/newUser">
-          <IconButton>
-            <AddCircleIcon fontSize="large" color="primary"  />
-          </IconButton>
-        </Link>
-        <Logout />
-        </div>
-      </header>
-      <Searchbar users={users} initialSearch={search} />
-      
-      </div>
-
-  )}
+    <Container maxWidth="lg" sx={{ py: { xs: 1.5, sm: 2, md: 2.5, lg: 3 }, px: { xs: 1, sm: 2 } }}>
+      <Box
+        component="header"
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: { xs: "flex-start", sm: "space-between" },
+          alignItems: { xs: "flex-start", sm: "center" },
+          gap: { xs: 1, sm: 2 },
+          mb: { xs: 2, sm: 3 },
+          flexWrap: "wrap"
+        }}
+      >
+        <h1 style={{ margin: 0, fontSize: "clamp(1.25rem, 5vw, 2rem)" }}>Nómina activa Biosidus</h1>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            ml: { xs: 0, sm: "auto" },
+            flexWrap: "wrap"
+          }}
+        >
+          <Link href="/admin/users/newUser">
+            <IconButton size="large">
+              <AddCircleIcon fontSize="large" color="primary" />
+            </IconButton>
+          </Link>
+          <Logout />
+        </Box>
+      </Box>
+      <Box>
+        <Searchbar users={users} initialSearch={search} />
+      </Box>
+    </Container>
+  );
+}

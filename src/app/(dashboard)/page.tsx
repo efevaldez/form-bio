@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Report from "./Form";
 import { getServerSession } from "next-auth";
 import { loginAuth } from "@/pages/api/auth/[...nextauth]";
+import { Box, Container } from "@mui/material";
 
 
 export default async function Dashboard() {
@@ -30,37 +31,34 @@ export default async function Dashboard() {
     return redirect("/login");
   }
 
-  // const result =
-  //   await sql`SELECT name FROM "Users" WHERE file = ${hash} LIMIT 1`;
-
-  // const userName = result.rows[0].name;
-
   return (
-    <main style={{ 
-      padding: "1rem",
-      display: "flex",
-      flexDirection: "column",
-      minHeight: "100vh",
-       }}>
-
-        <div style={{
-          display:'flex',
-          justifyContent:'space-between',
-          alignItems: 'center'
-        }}>
-          <h1> ¡Hola {userName}! </h1>
+    <Container maxWidth="lg">
+      <Box
+        component="main"
+        sx={{
+          py: { xs: 1.5, sm: 2, md: 2.5, lg: 3 },
+          px: { xs: 1, sm: 2 },
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: { xs: "flex-start", sm: "space-between" },
+            alignItems: { xs: "flex-start", sm: "center" },
+            gap: { xs: 1, sm: 2 },
+            mb: { xs: 2, sm: 3 },
+          }}
+        >
+          <h1 style={{ margin: 0, fontSize: "clamp(1.25rem, 5vw, 2rem)" }}>¡Hola {userName}!</h1>
           <Logout />
-        </div>
+        </Box>
 
         <Report />
-      {/* //<Logout />
-
-
-      <h1>Hola {userName}</h1>
-      <Report /> */}
-      {/* <Logout /> */}
-
-    </main>
-
+      </Box>
+    </Container>
   );
 }
