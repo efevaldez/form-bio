@@ -1,6 +1,5 @@
-"use server";
-import { sql } from "@vercel/postgres";
-
+'use server';
+import { sql } from '@vercel/postgres';
 
 export type user = {
   name: string;
@@ -12,12 +11,8 @@ export type user = {
   siteResponsibleEmail: string[];
 };
 
-export const getUserByFileAndDni = async (
-  file: string,
-  dni: string
-): Promise<user | null> => {
-  const result =
-    await sql`SELECT * FROM "Users" WHERE file = ${file} AND dni = ${dni} LIMIT 1`;
+export const getUserByFileAndDni = async (file: string, dni: string): Promise<user | null> => {
+  const result = await sql`SELECT * FROM "Users" WHERE file = ${file} AND dni = ${dni} LIMIT 1`;
   return result.rows[0] as user;
 };
 
@@ -33,8 +28,7 @@ export const getUserByFile = async (file: string): Promise<user | null> => {
     on sr.responsible = sru.file 
     where usr.file = ${file}
     group by usr.file, usr.name, sup.name, sup.email`;
-    console.log(result)
-    
-  return result.rows[0] as user;
+  console.log(result);
 
+  return result.rows[0] as user;
 };

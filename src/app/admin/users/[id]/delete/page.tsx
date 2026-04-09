@@ -13,11 +13,11 @@
 //     redirect("/admin/users");
 //   }
 
-  // async function handleDelete() {
-  //   "use server";
-  //   await deleteUser(id);
-  //   redirect("/admin/users");
-  // }
+// async function handleDelete() {
+//   "use server";
+//   await deleteUser(id);
+//   redirect("/admin/users");
+// }
 
 //   return (
 //     <Container maxWidth="sm">
@@ -37,10 +37,6 @@
 //     </Container>
 //   );
 // }
-
-
-
-
 
 // import { deleteUser } from "@/server/actions/deleteUser/deleteUser";
 // import { redirect } from "next/navigation";

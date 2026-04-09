@@ -1,10 +1,10 @@
-"use client";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import MuiSelect from "@mui/material/Select";
+'use client';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import MuiSelect from '@mui/material/Select';
 
 type Option = {
   value: string;
@@ -32,7 +32,7 @@ export default function Select({
   required?: boolean;
 }) {
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: '100%' }}>
       <FormControl fullWidth size="small" error={Boolean(error)}>
         <InputLabel id={`${id}-label`}>{label}</InputLabel>
 
@@ -40,20 +40,12 @@ export default function Select({
           labelId={`${id}-label`}
           id={id}
           name={name}
-          value={value ?? ""}
+          value={value ?? ''}
           label={label}
           onChange={(e) => onChange?.(e.target.value as string)}
           required
-          sx={{
-            borderRadius: "10px",
-            height: 56,
-            padding: "8px",
-          }}
         >
-        
-          <MenuItem value="">
-            Seleccionar 
-          </MenuItem>
+          <MenuItem value="">Seleccionar</MenuItem>
 
           {options.map((opt) => (
             <MenuItem key={opt.value} value={opt.value}>
@@ -66,12 +58,6 @@ export default function Select({
     </Box>
   );
 }
-
-
-
-
-
-
 
 // "use client";
 
@@ -105,7 +91,7 @@ export default function Select({
 //     <FormControl fullWidth size="small" required>
 //       {/* 1. El ID del Label debe ser el labelId */}
 //       <InputLabel id={labelId}>{label}</InputLabel>
-      
+
 //       <MuiSelect
 //         labelId={labelId} // 2. El Select debe referenciar ese mismo labelId
 //         id={id}
@@ -117,7 +103,7 @@ export default function Select({
 //         sx={{
 //           borderRadius: "10px",
 //           "& .MuiSelect-select": {
-//             padding: "16px 14px", 
+//             padding: "16px 14px",
 //           },
 //         }}
 //       >
@@ -134,17 +120,6 @@ export default function Select({
 //     </FormControl>
 //   );
 // }
-
-
-
-
-
-
-
-
-
-
-
 
 // "use client";
 
@@ -181,7 +156,7 @@ export default function Select({
 //     ...options,
 //   ];
 //   return (
-//     <Box sx={{// m: 1, minWidth: 120 
+//     <Box sx={{// m: 1, minWidth: 120
 //       width: "100%"}}>
 //       <FormControl fullWidth size="small">
 //         <InputLabel id="basic-select-label">{label}</InputLabel>
@@ -197,9 +172,9 @@ export default function Select({
 //             borderRadius: "10px",
 //             "& .MuiOutlinedInput-root": {
 //               borderRadius: "10px",
-//               height: 56, 
+//               height: 56,
 //             },
-            
+
 //           }}
 //         >
 //           {optionsExtended.map(({ value, label }) => (

@@ -1,58 +1,50 @@
-"use server";
+'use server';
 
-import { cookies } from "next/headers";
-import { getUserByFile } from "../queries/users";
-import nodemailer from "nodemailer";
+import { cookies } from 'next/headers';
+import nodemailer from 'nodemailer';
+import { getUserByFile } from '../queries/users';
 
 type SubmitExcuseResult = {
   success: boolean;
   message: string;
 };
 
-export async function submitExcuse(
-  formData: FormData
-): Promise<SubmitExcuseResult> {
-  const hash = (await cookies()).get("hash")?.value;
+export async function submitExcuse(formData: FormData): Promise<SubmitExcuseResult> {
+  const hash = (await cookies()).get('hash')?.value;
 
   if (!hash) {
     return {
       success: false,
-      message: "Sesión expirada. Volvé a iniciar sesión.",
+      message: 'Sesión expirada. Volvé a iniciar sesión.',
     };
   }
 
-  
-  const selectedExcuse = formData.get("selectedExcuse") as string;
-  const files = formData.getAll("files") as File[];
+  const selectedExcuse = formData.get('selectedExcuse') as string;
+  const files = formData.getAll('files') as File[];
 
   const attachments = await Promise.all(
     files.map(async (file) => {
       const buffer = Buffer.from(await file.arrayBuffer());
-      if (buffer.length > 2_000_000) throw new Error("Archivo demasiado grande");
+      if (buffer.length > 2_000_000) throw new Error('Archivo demasiado grande');
       return {
         filename: file.name,
         content: Buffer.from(await file.arrayBuffer()),
         contentType: file.type,
-      }
-    }))
-    ;
-
-
+      };
+    }),
+  );
   try {
     const user = await getUserByFile(hash);
 
     console.log(user);
-    console.log('rrhh',user?.siteResponsibleEmail);
-    console.log('supervisor',user?.supervisoremail);
+    console.log('rrhh', user?.siteResponsibleEmail);
+    console.log('supervisor', user?.supervisoremail);
 
-    const recipients = [
-      user?.supervisoremail,
-       ...user?.siteResponsibleEmail || [],
-    ]
-console.log('Mail enviado a:', recipients)
+    const recipients = [user?.supervisoremail, ...(user?.siteResponsibleEmail || [])];
+    console.log('Mail enviado a:', recipients);
 
     const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
+      host: 'smtp.office365.com',
       port: 587,
       secure: false,
       auth: {
@@ -64,7 +56,7 @@ console.log('Mail enviado a:', recipients)
     await transporter.sendMail({
       from: `${process.env.MAIL_USER}`,
       to: [`${recipients}`],
-      subject: "Nueva inasistencia recibida",
+      subject: 'Nueva inasistencia recibida',
       html: `
         <h3>¡Hola! Se reportó una nueva ausencia:</h3>
         <p><b>Motivo:</b> ${selectedExcuse}</p>
@@ -74,19 +66,19 @@ console.log('Mail enviado a:', recipients)
        
         <p>¡Gracias!</p>
       `,
-      attachments
+      attachments,
     });
 
     return {
       success: true,
-      message: "Reporte enviado correctamente",
+      message: 'Reporte enviado correctamente',
     };
   } catch (error) {
-    console.error("Error al enviar el reporte:", error);
+    console.error('Error al enviar el reporte:', error);
 
     return {
       success: false,
-      message: "Ocurrió un error al enviar el reporte",
+      message: 'Ocurrió un error al enviar el reporte',
     };
   }
 }
