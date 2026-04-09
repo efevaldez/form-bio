@@ -1,11 +1,16 @@
-"use client";
+'use client';
 
-import BasicSelect from "@/components/Select";
-import { submitExcuse } from "@/server/controllers/excuseController";
-import { excuse } from "@/utils/const";
-import { Button, Grid, IconButton, styled, Typography, Box, useMediaQuery, useTheme } from "@mui/material";
-import { useState } from "react";
+import Daypicker from '@/components/Daypicker';
+import BasicSelect from '@/components/Select';
+import { submitExcuse } from '@/server/controllers/excuseController';
+import { excuse } from '@/utils/const';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Button, Grid, IconButton, styled, Typography, useMediaQuery, useTheme } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
+import { Dayjs } from 'dayjs';
+import { useState } from 'react';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -18,12 +23,6 @@ const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 });
-import Alert from '@mui/material/Alert';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import Daypicker from "@/components/Daypicker";
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Dayjs } from "dayjs";
-
 
 const Report = () => {
   const theme = useTheme();
@@ -34,7 +33,7 @@ const Report = () => {
     label: value,
   }));
 
-  const [selectedExcuse, setSelectedExcuse] = useState("");
+  const [selectedExcuse, setSelectedExcuse] = useState('');
 
   //file upload
   const [files, setFiles] = useState<File[]>([]);
@@ -50,7 +49,7 @@ const Report = () => {
 
   // File upload validation constants
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
-  const ALLOWED_FILE_TYPES = ["application/pdf", "image/jpeg", "image/png"];
+  const ALLOWED_FILE_TYPES = ['application/pdf', 'image/jpeg', 'image/png'];
   const MAX_FILES = 3;
 
   const [fieldErrors, setFieldErrors] = useState({ selectedExcuse: '', date: '', files: '' });
@@ -102,17 +101,17 @@ const Report = () => {
     setLoading(true);
 
     const formData = new FormData();
-    formData.append("selectedExcuse", selectedExcuse);
+    formData.append('selectedExcuse', selectedExcuse);
     formData.append('date', date ? date.format('DD-MM-YYYY') : '');
 
     files.forEach((file) => {
-      formData.append("files", file);
-    })
+      formData.append('files', file);
+    });
     const result = await submitExcuse(formData);
     if (result.success) {
       setAlertSeverity('success');
     } else {
-      setAlertSeverity('error')
+      setAlertSeverity('error');
     }
     //    if (!result) {
     //   setAlertSeverity("error");
@@ -124,23 +123,20 @@ const Report = () => {
     //   setAlertSeverity("error");
     //   setAlertMessage(result.message);
     // }
-    setAlertMessage(result.message)
+    setAlertMessage(result.message);
     setLoading(false);
     setOpen(true);
 
-    if(result.success){
+    if (result.success) {
       setSelectedExcuse('');
       setDate(null);
       setFiles([]);
-    }else{
-      setAlertSeverity('error')
+    } else {
+      setAlertSeverity('error');
     }
-  }
+  };
 
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason,
-  ) => {
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -149,7 +145,7 @@ const Report = () => {
   };
 
   return (
-    <Grid container flexDirection={"column"} gap={{ xs: 1.5, sm: 2 }} sx={{ maxWidth: '100%' }}>
+    <Grid container flexDirection={'column'} gap={{ xs: 1.5, sm: 2 }} sx={{ maxWidth: '100%' }}>
       <BasicSelect
         label="Motivos"
         options={excusesOptions}
@@ -159,12 +155,7 @@ const Report = () => {
         helperText={fieldErrors.selectedExcuse}
       />
 
-      <Daypicker
-        value={date}
-        onChange={setDate}
-        error={Boolean(fieldErrors.date)}
-        helperText={fieldErrors.date}
-      />
+      <Daypicker value={date} onChange={setDate} error={Boolean(fieldErrors.date)} helperText={fieldErrors.date} />
 
       <Button
         component="label"
@@ -212,7 +203,7 @@ const Report = () => {
                 setAlertMessage(
                   selectedFiles.length === 1
                     ? 'Archivo adjunto correctamente'
-                    : `${selectedFiles.length} archivos adjuntos correctamente`
+                    : `${selectedFiles.length} archivos adjuntos correctamente`,
                 );
                 setOpen(true);
               }
@@ -224,7 +215,7 @@ const Report = () => {
       {files.length > 0 && (
         <Box
           sx={{
-            border: "1px solid #000",
+            border: '1px solid #000',
             borderRadius: 1,
             padding: { xs: 1, sm: 2 },
           }}
@@ -232,20 +223,14 @@ const Report = () => {
           <strong>Archivo adjunto:</strong>
 
           {files.map((file, index) => (
-            <Grid
-              key={index}
-              container
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{ mt: 1 }}
-            >
+            <Grid key={index} container justifyContent="space-between" alignItems="center" sx={{ mt: 1 }}>
               <Typography
                 variant="body2"
                 sx={{
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
-                  maxWidth: { xs: 'calc(100% - 40px)', sm: '100%' }
+                  maxWidth: { xs: 'calc(100% - 40px)', sm: '100%' },
                 }}
               >
                 {file.name}
@@ -255,9 +240,7 @@ const Report = () => {
                 aria-label="delete"
                 color="error"
                 size={isMobile ? 'small' : 'medium'}
-                onClick={() =>
-                  setFiles((prev) => prev.filter((_, i) => i !== index))
-                }
+                onClick={() => setFiles((prev) => prev.filter((_, i) => i !== index))}
               >
                 <DeleteIcon fontSize="inherit" />
               </IconButton>
@@ -272,12 +255,7 @@ const Report = () => {
         </Typography>
       )}
 
-      <Button
-        variant="contained"
-        disabled={loading}
-        onClick={() => handleSubmit()}
-        fullWidth={isMobile}
-      >
+      <Button variant="contained" disabled={loading} onClick={() => handleSubmit()} fullWidth={isMobile}>
         {loading ? 'Enviando...' : 'Enviar'}
       </Button>
 
@@ -287,12 +265,7 @@ const Report = () => {
         onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert
-          onClose={handleClose}
-          severity={alertSeverity}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
+        <Alert onClose={handleClose} severity={alertSeverity} variant="filled" sx={{ width: '100%' }}>
           {alertMessage}
         </Alert>
       </Snackbar>

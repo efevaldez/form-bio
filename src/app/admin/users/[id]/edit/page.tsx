@@ -1,7 +1,6 @@
-import { sql } from "@vercel/postgres";
-import EditUserForm from "./editUserForm";
-import { Container, Box } from "@mui/material";
-
+import { Box, Container } from '@mui/material';
+import { sql } from '@vercel/postgres';
+import EditUserForm from './editUserForm';
 
 interface User {
   id: string;
@@ -12,7 +11,7 @@ interface User {
   site: string;
 }
 export default async function EditUserPage({ params }: { params: { id: string } }) {
-    const { id } = await params;
+  const { id } = await params;
   const { rows } = await sql`SELECT * FROM "Users" WHERE file = ${id}`;
   const user = rows[0] as User;
 

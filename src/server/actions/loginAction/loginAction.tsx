@@ -1,20 +1,17 @@
-"use server";
+'use server';
 
-import { LoginState } from "@/app/login/Form";
-import { getUserByFileAndDni } from "@/server/queries/users";
+import { LoginState } from '@/app/login/Form';
+import { getUserByFileAndDni } from '@/server/queries/users';
 
-export async function loginAction(
-  _state: LoginState,
-  formData: FormData
-): Promise<LoginState> {
-  const dniInput = (formData.get("dni") as string | null) ?? "";
-  const fileInput = (formData.get("file") as string | null) ?? "";
+export async function loginAction(_state: LoginState, formData: FormData): Promise<LoginState> {
+  const dniInput = (formData.get('dni') as string | null) ?? '';
+  const fileInput = (formData.get('file') as string | null) ?? '';
 
-  const dni = dniInput.replace(/\D/g, "");
-  const file = fileInput.replace(/\D/g, "");
+  const dni = dniInput.replace(/\D/g, '');
+  const file = fileInput.replace(/\D/g, '');
 
   if (!dni || !file) {
-    return { ok: false, message: "Datos incorrectos", name: null, hash: "" };
+    return { ok: false, message: 'Datos incorrectos', name: null, hash: '' };
   }
 
   const user = await getUserByFileAndDni(file, dni);
@@ -22,9 +19,9 @@ export async function loginAction(
   if (!user) {
     return {
       ok: false,
-      message: "El DNI y el legajo no coinciden",
+      message: 'El DNI y el legajo no coinciden',
       name: null,
-      hash: "",
+      hash: '',
     };
   }
 
@@ -32,6 +29,6 @@ export async function loginAction(
     ok: true,
     name: user.name,
     hash: file,
-    message: "",
+    message: '',
   };
 }

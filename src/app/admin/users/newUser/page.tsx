@@ -1,5 +1,5 @@
-import { sql } from "@vercel/postgres";
-import UserForm from "./userForm";
+import { sql } from '@vercel/postgres';
+import UserForm from './userForm';
 
 export default async function NewUserPage() {
   const { rows } = await sql`

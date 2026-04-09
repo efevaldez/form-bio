@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import { deleteUser } from "@/server/actions/deleteUser/deleteUser";
+import { deleteUser } from '@/server/actions/deleteUser/deleteUser';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface DeleteUserButtonProps {
   userId: string;
@@ -45,7 +45,7 @@ export default function DeleteUserButton({ userId, userName }: DeleteUserButtonP
             Cancelar
           </Button>
           <Button onClick={handleDelete} color="error" variant="contained" disabled={loading}>
-            {loading ? "Eliminando..." : "Sí, eliminar"}
+            {loading ? 'Eliminando...' : 'Sí, eliminar'}
           </Button>
         </DialogActions>
       </Dialog>
