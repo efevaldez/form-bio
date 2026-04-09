@@ -18,24 +18,24 @@
     "@mui/x-date-pickers": "^8.23.0",
     "@vercel/postgres": "^0.10.0",
     "dayjs": "^1.11.19",
-    "next": "16.0.8",
+    "next": "16.2.3",
     "next-auth": "^4.24.13",
     "nodemailer": "^7.0.12",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
-    "react-hook-form": "^7.68.0"
+    "react": "19.2.5",
+    "react-dom": "19.2.5",
+    "react-hook-form": "^7.72.1"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/nodemailer": "^7.0.4",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.8",
-    "typescript": "^5",
-    "prettier": "^3.6.2",
-    "prettier-plugin-organize-imports": "^4.2.0"
+    "typescript": "^6.0.2",
+    "prettier": "^3.8.1",
+    "prettier-plugin-organize-imports": "^4.3.0"
   },
   "packageManager": "pnpm@10.25.0+sha512.5e82639027af37cf832061bcc6d639c219634488e0f2baebe785028a793de7b525ffcd3f7ff574f5e9860654e098fe852ba8ac5dd5cefe1767d23a020a92f501"
 }
