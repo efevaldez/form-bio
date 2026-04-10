@@ -19,20 +19,26 @@ export default function Daypicker({ value, onChange, error, helperText }: Daypic
         textField: {
             fullWidth: true,
             variant: "outlined",
-            size: "small",
+            size: "medium",
             error: Boolean(error),
             helperText: helperText,
             sx: {
               backgroundColor: "#fff",
               borderRadius: "10px",
               "& .MuiOutlinedInput-root": {
-                borderRadius: "10px",
-                height: "56",
+                borderRadius: "10px !important",
+                height: "56px",
+                "& .MuiOutlinedInput-input": {
+                  padding: "8px",
+                },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderRadius: "10px !important",
+                }
               },
             },
           },
         }}
-        label="Ingresá la fecha de tu ausencia"
+        label="Ingresá la fecha de tu ausencia:"
         value={value}
         onChange={onChange}
       />

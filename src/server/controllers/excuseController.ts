@@ -21,35 +21,21 @@ export async function submitExcuse(
     };
   }
 
-  
+
   const selectedExcuse = formData.get("selectedExcuse") as string;
-  const files = formData.getAll("files") as File[];
-
-  const attachments = await Promise.all(
-    files.map(async (file) => {
-      const buffer = Buffer.from(await file.arrayBuffer());
-      if (buffer.length > 2_000_000) throw new Error("Archivo demasiado grande");
-      return {
-        filename: file.name,
-        content: Buffer.from(await file.arrayBuffer()),
-        contentType: file.type,
-      }
-    }))
-    ;
-
 
   try {
     const user = await getUserByFile(hash);
 
     console.log(user);
-    console.log('rrhh',user?.siteResponsibleEmail);
-    console.log('supervisor',user?.supervisoremail);
+    console.log('rrhh', user?.siteResponsibleEmail);
+    console.log('supervisor', user?.supervisoremail);
 
     const recipients = [
       user?.supervisoremail,
-       ...user?.siteResponsibleEmail || [],
+     ...user?.siteResponsibleEmail || [],
     ]
-console.log('Mail enviado a:', recipients)
+    console.log('Mail enviado a:', recipients)
 
     const transporter = nodemailer.createTransport({
       host: "smtp.office365.com",
@@ -74,12 +60,14 @@ console.log('Mail enviado a:', recipients)
        
         <p>¡Gracias!</p>
       `,
-      attachments
     });
 
     return {
       success: true,
-      message: "Reporte enviado correctamente",
+      message: `Reporte enviado correctamente. 
+    Estimado/a: Le recordamos que este canal tiene como única finalidad la notificación de ausencias y/o llegadas tarde.
+     Por favor, recuerde subir el justificativo o constancia a la plataforma TuRecibo.com
+¡Muchas gracias!`
     };
   } catch (error) {
     console.error("Error al enviar el reporte:", error);
