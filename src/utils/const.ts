@@ -5,6 +5,6 @@ export const excuse = {
   ROBO_O_HURTO: "Robo o hurto",
   ACCIDENTE: "Accidente in itinere",
   SINIESTRO_EN_VIVIENDA: "Siniestro en vivienda",
-  FALLECIMIENTO: "Licencia por fallecimiento",
+  FALLECIMIENTO: "Fallecimiento familiar",
   OTROS: "Otros",
 };
