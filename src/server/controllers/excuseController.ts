@@ -65,7 +65,7 @@ export async function submitExcuse(
     return {
       success: true,
       message: `Reporte enviado correctamente. 
-    Estimado/a: Le recordamos que este canal tiene como única finalidad la notificación de ausencias y/o llegadas tarde.
+    Estimado/a: Le recordamos que este canal tiene como única finalidad la notificación de ausencias.
      Por favor, recuerde subir el justificativo o constancia a la plataforma TuRecibo.com
 ¡Muchas gracias!`
     };
