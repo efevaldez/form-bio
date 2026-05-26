@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { getUserByFile } from "../queries/users";
+import { excuse } from "@/utils/const";
 import nodemailer from "nodemailer";
 
 type SubmitExcuseResult = {
@@ -29,13 +30,39 @@ export async function submitExcuse(
 
     console.log(user);
     console.log('rrhh', user?.siteResponsibleEmail);
-    console.log('supervisor', user?.supervisoremail);
+    console.log('supervisor', user?.supervisorEmail);
 
-    const recipients = [
-   user?.supervisoremail,
-     ...user?.siteResponsibleEmail || [],
-    ]
-    console.log('Mail enviado a:', recipients)
+    const recipients = new Set<string>();
+    const supervisorEmail = user?.supervisorEmail;
+    if (supervisorEmail) {
+      recipients.add(supervisorEmail);
+    }
+
+    if (user?.siteResponsibleEmail?.length) {
+      user.siteResponsibleEmail.forEach((email) => {
+        if (email) recipients.add(email);
+      });
+    }
+
+    const illnessExcuse = [
+      excuse.ENFERMEDAD,
+      excuse.ENFERMEDAD_DE_FAMILIAR,
+    ].includes(selectedExcuse);
+
+    const site = String(user?.site ?? "");
+    if (illnessExcuse) {
+      if (site === "1") {
+        recipients.add("consultoriobernal@outlook.com");
+      } else if (site === "2") {
+        recipients.add("consultorioalmagro@outlook.com");
+      }
+      if (supervisorEmail) {
+        recipients.add(supervisorEmail);
+      }
+    }
+
+    const recipientList = Array.from(recipients);
+    console.log('Mail enviado a:', recipientList)
 
     const transporter = nodemailer.createTransport({
       host: "smtp.office365.com",
@@ -49,7 +76,7 @@ export async function submitExcuse(
 
     await transporter.sendMail({
       from: `${process.env.MAIL_USER}`,
-      to: [`${recipients}`],
+      to: recipientList,
       subject: "Nueva inasistencia recibida",
       html: `
         <h3>¡Hola! Se reportó una nueva ausencia:</h3>

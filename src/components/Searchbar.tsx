@@ -6,7 +6,7 @@ import {
   Box, TextField, InputAdornment, IconButton, Card, CardContent,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Paper, Stack, useMediaQuery, useTheme,
-  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button
+  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Alert
 } from '@mui/material';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import EditIcon from '@mui/icons-material/Edit';
@@ -27,6 +27,7 @@ export default function UserSearch({ users, initialSearch = '' }: { users: User[
   const [search, setSearch] = useState(initialSearch);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -38,13 +39,25 @@ export default function UserSearch({ users, initialSearch = '' }: { users: User[
     router.push(`/admin/users?${params.toString()}`);
   };
 
+  const openDeleteDialog = (user: User) => {
+    setDeleteError(null);
+    setUserToDelete(user);
+  };
+
   const handleDelete = async () => {
     if (!userToDelete) return;
     setLoading(true);
-    await deleteUser(userToDelete.file);
-    setUserToDelete(null);
-    setLoading(false);
-    router.refresh();
+    setDeleteError(null);
+
+    try {
+      await deleteUser(userToDelete.file);
+      setUserToDelete(null);
+      router.refresh();
+    } catch (error) {
+      setDeleteError(error instanceof Error ? error.message : "Error al eliminar el usuario");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -80,7 +93,7 @@ export default function UserSearch({ users, initialSearch = '' }: { users: User[
                   <Link href={`/admin/users/${user.file}/edit`}>
                     <IconButton size="small"><EditIcon color="success" /></IconButton>
                   </Link>
-                  <IconButton size="small" onClick={() => setUserToDelete(user)}>
+                  <IconButton size="small" onClick={() => openDeleteDialog(user)}>
                     <DeleteIcon color="error" />
                   </IconButton>
                 </Box>
@@ -109,7 +122,7 @@ export default function UserSearch({ users, initialSearch = '' }: { users: User[
                     <Link href={`/admin/users/${user.file}/edit`}>
                       <IconButton size="small"><EditIcon color="success" /></IconButton>
                     </Link>
-                    <IconButton size="small" onClick={() => setUserToDelete(user)}>
+                    <IconButton size="small" onClick={() => openDeleteDialog(user)}>
                       <DeleteIcon color="error" />
                     </IconButton>
                   </TableCell>
@@ -129,6 +142,11 @@ export default function UserSearch({ users, initialSearch = '' }: { users: User[
             <br></br>
             ¡Esta acción no se puede deshacer!
           </DialogContentText>
+          {deleteError && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {deleteError}
+            </Alert>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setUserToDelete(null)} disabled={loading}>Cancelar</Button>
