@@ -8,6 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
+import Alert from "@mui/material/Alert";
 import { deleteUser } from "@/server/actions/deleteUser/deleteUser";
 
 interface DeleteUserButtonProps {
@@ -18,13 +19,23 @@ interface DeleteUserButtonProps {
 export default function DeleteUserButton({ userId, userName }: DeleteUserButtonProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const router = useRouter();
 
   async function handleDelete() {
     setLoading(true);
-    await deleteUser(userId);
-    setOpen(false);
-    router.refresh();
+    setDeleteError(null);
+    try {
+      await deleteUser(userId);
+      setOpen(false);
+      router.refresh();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Error al eliminar el usuario";
+      setDeleteError(message);
+      console.error("Error deleting user:", error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -39,6 +50,11 @@ export default function DeleteUserButton({ userId, userName }: DeleteUserButtonP
           <DialogContentText>
             ¿Estás seguro que querés eliminar a <strong>{userName}</strong>? Esta acción no se puede deshacer.
           </DialogContentText>
+          {deleteError && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {deleteError}
+            </Alert>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)} disabled={loading}>
